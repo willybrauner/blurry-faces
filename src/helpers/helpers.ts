@@ -52,3 +52,11 @@ export const div2Canvas = (
   link.href = canvas.toDataURL("image/jpg")
   link.click()
 }
+
+/**
+ * getFilenameFromUrl
+ */
+export const getFilenameFromUrl = (imageUrl: string) => {
+  const fileNameWithExtension = imageUrl.substring(imageUrl.lastIndexOf("/") + 1)
+  return fileNameWithExtension.split(".")[0]
+}

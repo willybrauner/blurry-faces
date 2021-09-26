@@ -1,10 +1,10 @@
 import css from "./BlurryFacesImage.module.less"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import BlurZone from "../blurZone/BlurZone"
-import { div2Canvas } from "../../helpers/helpers"
+import { div2Canvas, getFilenameFromUrl } from "../../helpers/helpers"
 
 interface IProps {
   className?: string
@@ -83,7 +83,6 @@ function BlurryFacesImage(props: IProps) {
       height: detection.box.height / detection.imageDims.height,
     }))
     debug("boxs", boxs)
-
     setBlurZones(boxs)
   }
 
@@ -103,21 +102,16 @@ function BlurryFacesImage(props: IProps) {
   }
 
   /**
-   * Get [0] Filename
-   * Get [1] extension
-   */
-  const [filename] = useMemo(() => {
-    const fileNameWithExtension = props.imageUrl.substring(
-      props.imageUrl.lastIndexOf("/") + 1
-    )
-    return fileNameWithExtension.split(".")
-  }, [props.imageUrl])
-
-  /**
    * Create image
    */
   const createImage = () => {
-    div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones, filename)
+    div2Canvas(
+      imageSize.width,
+      imageSize.height,
+      imageRef.current,
+      blurZones,
+      getFilenameFromUrl(props.imageUrl)
+    )
   }
 
   return (
