@@ -18,8 +18,8 @@ const debug = require("debug")(`front:${componentName}`)
 function BlurryFacesGallery(props: IProps) {
   return (
     <div className={merge([css.root, props.className])}>
-      {props.imageUrls?.map((el) => (
-        <BlurryFacesImage className={css.image} imageUrl={el} />
+      {props.imageUrls?.map((el, i) => (
+        <BlurryFacesImage className={css.image} imageUrl={el} key={i} />
       ))}
     </div>
   )

@@ -13,6 +13,7 @@ interface IProps {
   className?: string
   imageSize: { width: number; height: number }
   box: TBox
+  onClick: () => void
 }
 
 const componentName = "BlurZone"
@@ -31,7 +32,13 @@ function BlurZone(props: IProps) {
     left: Math.floor(props.box.x * props.imageSize.width) + "px",
   }
 
-  return <div className={merge([css.root, props.className])} style={style} />
+  return (
+    <div
+      className={merge([css.root, props.className])}
+      style={style}
+      onClick={props.onClick}
+    />
+  )
 }
 
 export default BlurZone

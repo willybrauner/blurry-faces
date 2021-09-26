@@ -92,6 +92,15 @@ function BlurryFacesImage(props: IProps) {
     }
   }, [faceDetections, windowSize])
 
+  /**
+   * remove Blur if clicked
+   * @param i
+   */
+  const handleBlurZoneClick = (i: number) => {
+    const update = blurFacesPos.filter((e, index) => index !== i)
+    setBlurFacesPos(update)
+  }
+
   return (
     <div className={css.root} ref={rootRef}>
       <div className={css.wrapper}>
@@ -99,7 +108,12 @@ function BlurryFacesImage(props: IProps) {
         <canvas className={css.canvas} ref={canvasRef} />
         <div className={css.blurFacesWrapper}>
           {blurFacesPos.map((el, i) => (
-            <BlurZone box={el} key={i} imageSize={imageSize} />
+            <BlurZone
+              box={el}
+              key={i}
+              imageSize={imageSize}
+              onClick={() => handleBlurZoneClick(i)}
+            />
           ))}
         </div>
       </div>
