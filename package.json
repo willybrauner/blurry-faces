@@ -44,7 +44,8 @@
     "face-api.js": "^0.22.2",
     "gsap": "^3.7.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "stackblur-canvas": "^2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
