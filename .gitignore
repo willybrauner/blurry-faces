@@ -1,0 +1,16 @@
+# values auto-commented during first setup
+# config/install.config.js
+
+# Output application depend of project
+dist
+
+# Auto generated atoms
+src/atoms/atoms.ts
+
+.env
+node_modules
+.DS_Store
+.idea
+.vscode
+.history
+
