@@ -1,9 +1,10 @@
 import css from "./BlurryFacesImage.module.less"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import BlurZone from "../blurZone/BlurZone"
+import { div2Canvas } from "../../helpers/helpers"
 
 interface IProps {
   className?: string
@@ -55,7 +56,7 @@ function BlurryFacesImage(props: IProps) {
    * Draw canvas
    * @param detections
    */
-  const [blurFacesPos, setBlurFacesPos] = useState([])
+  const [blurZones, setBlurZones] = useState([])
   const drawCanvas = (detections: FaceDetection[]): void => {
     const displaySize = {
       width: imageRef.current.width,
@@ -83,7 +84,7 @@ function BlurryFacesImage(props: IProps) {
     }))
     debug("boxs", boxs)
 
-    setBlurFacesPos(boxs)
+    setBlurZones(boxs)
   }
 
   useEffect(() => {
@@ -97,8 +98,26 @@ function BlurryFacesImage(props: IProps) {
    * @param i
    */
   const handleBlurZoneClick = (i: number) => {
-    const update = blurFacesPos.filter((e, index) => index !== i)
-    setBlurFacesPos(update)
+    const update = blurZones.filter((e, index) => index !== i)
+    setBlurZones(update)
+  }
+
+  /**
+   * Get [0] Filename
+   * Get [1] extension
+   */
+  const [filename] = useMemo(() => {
+    const fileNameWithExtension = props.imageUrl.substring(
+      props.imageUrl.lastIndexOf("/") + 1
+    )
+    return fileNameWithExtension.split(".")
+  }, [props.imageUrl])
+
+  /**
+   * Create image
+   */
+  const createImage = () => {
+    div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones, filename)
   }
 
   return (
@@ -107,7 +126,7 @@ function BlurryFacesImage(props: IProps) {
         <img className={css.image} alt={"image"} src={props.imageUrl} ref={imageRef} />
         <canvas className={css.canvas} ref={canvasRef} />
         <div className={css.blurFacesWrapper}>
-          {blurFacesPos.map((el, i) => (
+          {blurZones.map((el, i) => (
             <BlurZone
               box={el}
               key={i}
@@ -117,6 +136,8 @@ function BlurryFacesImage(props: IProps) {
           ))}
         </div>
       </div>
+
+      <div onClick={createImage}>{"download image"}</div>
     </div>
   )
 }

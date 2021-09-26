@@ -21,6 +21,8 @@ function BlurryFacesGallery(props: IProps) {
       {props.imageUrls?.map((el, i) => (
         <BlurryFacesImage className={css.image} imageUrl={el} key={i} />
       ))}
+
+      <button className={css.download}></button>
     </div>
   )
 }

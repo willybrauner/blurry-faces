@@ -2,7 +2,7 @@ import css from "./BlurZone.module.less"
 import React from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 
-export type TBox = {
+export type TBlurZone = {
   width: number
   height: number
   x: number
@@ -12,7 +12,7 @@ export type TBox = {
 interface IProps {
   className?: string
   imageSize: { width: number; height: number }
-  box: TBox
+  box: TBlurZone
   onClick: () => void
 }
 
