@@ -39,13 +39,13 @@
   "dependencies": {
     "@cher-ami/router": "^1.1.0",
     "@solid-js/css-flat": "^1.0.1",
+    "@use-gesture/react": "^10.0.0",
     "@wbe/use-window-size": "^2.4.0",
     "encoding": "^0.1.13",
     "face-api.js": "^0.22.2",
     "gsap": "^3.7.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "stackblur-canvas": "^2.5.0"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",

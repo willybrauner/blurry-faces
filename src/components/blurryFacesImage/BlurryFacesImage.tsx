@@ -25,10 +25,9 @@ function BlurryFacesImage(props: IProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef(null)
   const canvasRef = useRef(null)
-  const blurFacesWrapperRef = useRef(null)
   const windowSize = useWindowSize()
 
-  const [imageRect, setImageRect] = useState(null)
+  const [imageSize, setImageSize] = useState<{ width: number; height: number }>(null)
 
   /**
    * Get face detections
@@ -62,7 +61,7 @@ function BlurryFacesImage(props: IProps) {
       width: imageRef.current.width,
       height: imageRef.current.height,
     }
-    setImageRect(displaySize)
+    setImageSize(displaySize)
 
     // resize the overlay canvas to the input dimensions
     faceapi.matchDimensions(canvasRef.current, displaySize)
@@ -82,6 +81,7 @@ function BlurryFacesImage(props: IProps) {
       width: detection.box.width / detection.imageDims.width,
       height: detection.box.height / detection.imageDims.height,
     }))
+    debug("boxs", boxs)
 
     setBlurFacesPos(boxs)
   }
@@ -97,9 +97,9 @@ function BlurryFacesImage(props: IProps) {
       <div className={css.wrapper}>
         <img className={css.image} alt={"image"} src={props.imageUrl} ref={imageRef} />
         <canvas className={css.canvas} ref={canvasRef} />
-        <div className={css.blurFacesWrapper} ref={blurFacesWrapperRef}>
+        <div className={css.blurFacesWrapper}>
           {blurFacesPos.map((el, i) => (
-            <BlurSquare box={el} key={i} imageSize={imageRect} />
+            <BlurSquare box={el} key={i} imageSize={imageSize} />
           ))}
         </div>
       </div>

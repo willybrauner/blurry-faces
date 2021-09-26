@@ -2,15 +2,17 @@ import css from "./BlurSquare.module.less"
 import React from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 
+export type TBox = {
+  width: number
+  height: number
+  x: number
+  y: number
+}
+
 interface IProps {
   className?: string
   imageSize: { width: number; height: number }
-  box: {
-    width: number
-    height: number
-    x: number
-    y: number
-  }
+  box: TBox
 }
 
 const componentName = "BlurSquare"
