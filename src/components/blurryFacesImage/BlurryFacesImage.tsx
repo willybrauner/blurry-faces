@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
-import * as StackBlur from "stackblur-canvas"
-import { merge } from "../../lib/utils/arrayUtils"
 import BlurSquare from "../blurSquare/BlurSquare"
 
 interface IProps {
@@ -68,50 +66,25 @@ function BlurryFacesImage(props: IProps) {
 
     // resize the overlay canvas to the input dimensions
     faceapi.matchDimensions(canvasRef.current, displaySize)
+
     // resize the detected boxes in case your displayed image has a different size than the original
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
+
     // draw detections into the canvas
-    faceapi.draw.drawDetections(canvasRef.current, resizedDetections)
+    // faceapi.draw.drawDetections(canvasRef.current, resizedDetections)
 
     // blur result
     debug("detections", detections)
-
-    const boxs = detections.map((detection) => {
-      return detection.box
-    })
+    // normalise box size
+    const boxs = detections.map((detection) => ({
+      x: detection.box.x / detection.imageDims.width,
+      y: detection.box.y / detection.imageDims.height,
+      width: detection.box.width / detection.imageDims.width,
+      height: detection.box.height / detection.imageDims.height,
+    }))
 
     setBlurFacesPos(boxs)
   }
-
-  // function drawSingleBlurFilter(
-  //   detection: FaceDetection,
-  //   displaySize: { width: number; height: number }
-  // ) {
-  //   debug(detection, detection.box)
-  //   const { x, y, width, height, top, left } = detection.box
-  //   debug({ x, y, width, height, top, left })
-  //
-  //   // const blurImage = new Image(displaySize.width, displaySize.height)
-  //   // blurImage.src = props.imageUrl
-  //
-  //   const context = canvasRef.current.getContext("2d")
-  //   // context.drawImage(imageRef.current, 0, 0, displaySize.width, displaySize.height)
-  //   //StackBlur.image(imageRef.current, canvasRef.current, 30)
-  //
-  //   context.fillStyle = "rgba(0,0,0,1)"
-  //   // context.filter = "blur(2px)"
-  //
-  //   context.beginPath()
-  //
-  //   const xPos = displaySize.width / 2 - width / 2
-  //   const yPos = displaySize.height / 2 - height / 2
-  //   context.fillRect(x, y, width, height)
-  //
-  //   //    context.arc(x, y, 30, 0, Math.PI * 2, true)
-  //   context.fill()
-  //
-  //   //   StackBlur.canvasRGBA(canvasRef.current, x, y, width, height, 10)
-  // }
 
   useEffect(() => {
     if (faceDetections) {

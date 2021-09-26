@@ -8,8 +8,6 @@ interface IProps {
   box: {
     width: number
     height: number
-    top: number
-    left: number
     x: number
     y: number
   }
@@ -22,26 +20,16 @@ const debug = require("debug")(`front:${componentName}`)
  * @name BlurSquare
  */
 function BlurSquare(props: IProps) {
-  debug(props.imageSize.width)
-  debug(props.box.left)
+  debug(props.box)
 
-  const ratio = {
-    left: props.box.left / 100,
+  const style = {
+    width: Math.floor(props.box.width * props.imageSize.width) + "px",
+    height: Math.floor(props.box.height * props.imageSize.height) + "px",
+    top: Math.floor(props.box.y * props.imageSize.height) + "px",
+    left: Math.floor(props.box.x * props.imageSize.width) + "px",
   }
 
-  return (
-    <div
-      className={merge([css.root, props.className])}
-      style={{
-        width: props.box.width,
-        height: props.box.height,
-        top: props.box.top,
-        left: props.box.left,
-      }}
-    >
-      <div className={css.inner} style={{}} />
-    </div>
-  )
+  return <div className={merge([css.root, props.className])} style={style} />
 }
 
 export default BlurSquare
