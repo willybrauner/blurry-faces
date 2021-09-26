@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
-import BlurSquare from "../blurSquare/BlurSquare"
+import BlurZone from "../blurZone/BlurZone"
 
 interface IProps {
   className?: string
@@ -99,7 +99,7 @@ function BlurryFacesImage(props: IProps) {
         <canvas className={css.canvas} ref={canvasRef} />
         <div className={css.blurFacesWrapper}>
           {blurFacesPos.map((el, i) => (
-            <BlurSquare box={el} key={i} imageSize={imageSize} />
+            <BlurZone box={el} key={i} imageSize={imageSize} />
           ))}
         </div>
       </div>

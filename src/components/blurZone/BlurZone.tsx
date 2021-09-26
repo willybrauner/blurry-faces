@@ -1,4 +1,4 @@
-import css from "./BlurSquare.module.less"
+import css from "./BlurZone.module.less"
 import React from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 
@@ -15,13 +15,13 @@ interface IProps {
   box: TBox
 }
 
-const componentName = "BlurSquare"
+const componentName = "BlurZone"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
- * @name BlurSquare
+ * @name BlurZone
  */
-function BlurSquare(props: IProps) {
+function BlurZone(props: IProps) {
   debug(props.box)
 
   const style = {
@@ -34,4 +34,4 @@ function BlurSquare(props: IProps) {
   return <div className={merge([css.root, props.className])} style={style} />
 }
 
-export default BlurSquare
+export default BlurZone
