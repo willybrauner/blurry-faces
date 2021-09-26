@@ -50,7 +50,7 @@ function BlurryFacesImage(props: IProps) {
     getFaceDetections().then((detections: FaceDetection[]) => {
       setFaceDetections(detections)
     })
-  }, [])
+  }, [props.imageUrl])
 
   /**
    * Draw canvas

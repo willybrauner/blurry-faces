@@ -1,4 +1,4 @@
-# blury-faces-app
+# blurry-faces-app
 
 ## About
 

@@ -1,5 +1,5 @@
 import css from "./BlurryFacesGallery.module.less"
-import React, { useState } from "react"
+import React from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
 import image1 from "../../images/classe-01.jpg"
