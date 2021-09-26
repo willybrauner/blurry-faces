@@ -5,6 +5,7 @@ import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import * as StackBlur from "stackblur-canvas"
 import { merge } from "../../lib/utils/arrayUtils"
+import BlurSquare from "../blurSquare/BlurSquare"
 
 interface IProps {
   className?: string
@@ -28,6 +29,8 @@ function BlurryFacesImage(props: IProps) {
   const canvasRef = useRef(null)
   const blurFacesWrapperRef = useRef(null)
   const windowSize = useWindowSize()
+
+  const [imageRect, setImageRect] = useState(null)
 
   /**
    * Get face detections
@@ -55,16 +58,16 @@ function BlurryFacesImage(props: IProps) {
    * Draw canvas
    * @param detections
    */
+  const [blurFacesPos, setBlurFacesPos] = useState([])
   const drawCanvas = (detections: FaceDetection[]): void => {
     const displaySize = {
       width: imageRef.current.width,
       height: imageRef.current.height,
     }
-    debug("displaySize: ", displaySize)
+    setImageRect(displaySize)
 
     // resize the overlay canvas to the input dimensions
     faceapi.matchDimensions(canvasRef.current, displaySize)
-    //faceapi.matchDimensions(canvasBlurRef.current, displaySize)
     // resize the detected boxes in case your displayed image has a different size than the original
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     // draw detections into the canvas
@@ -72,41 +75,43 @@ function BlurryFacesImage(props: IProps) {
 
     // blur result
     debug("detections", detections)
-    for (let detection of detections) {
-      drawSingleBlurFilter(detection, displaySize)
-    }
+
+    const boxs = detections.map((detection) => {
+      return detection.box
+    })
+
+    setBlurFacesPos(boxs)
   }
 
-  function drawSingleBlurFilter(
-    detection: FaceDetection,
-    displaySize: { width: number; height: number }
-  ) {
-    debug(detection, detection.box)
-    const { x, y, width, height, top, left } = detection.box
-    debug({ x, y, width, height, top, left })
-
-    // const blurImage = new Image(displaySize.width, displaySize.height)
-    // blurImage.src = props.imageUrl
-
-    const context = canvasRef.current.getContext("2d")
-
-    // context.drawImage(imageRef.current, 0, 0, displaySize.width, displaySize.height)
-    //StackBlur.image(imageRef.current, canvasRef.current, 30)
-
-    context.fillStyle = "rgba(0,0,0,1)"
-    // context.filter = "blur(2px)"
-
-    context.beginPath()
-
-    const xPos = displaySize.width / 2 - width / 2
-    const yPos = displaySize.height / 2 - height / 2
-    context.fillRect(x, y, width, height)
-
-    //    context.arc(x, y, 30, 0, Math.PI * 2, true)
-    context.fill()
-
-    //   StackBlur.canvasRGBA(canvasRef.current, x, y, width, height, 10)
-  }
+  // function drawSingleBlurFilter(
+  //   detection: FaceDetection,
+  //   displaySize: { width: number; height: number }
+  // ) {
+  //   debug(detection, detection.box)
+  //   const { x, y, width, height, top, left } = detection.box
+  //   debug({ x, y, width, height, top, left })
+  //
+  //   // const blurImage = new Image(displaySize.width, displaySize.height)
+  //   // blurImage.src = props.imageUrl
+  //
+  //   const context = canvasRef.current.getContext("2d")
+  //   // context.drawImage(imageRef.current, 0, 0, displaySize.width, displaySize.height)
+  //   //StackBlur.image(imageRef.current, canvasRef.current, 30)
+  //
+  //   context.fillStyle = "rgba(0,0,0,1)"
+  //   // context.filter = "blur(2px)"
+  //
+  //   context.beginPath()
+  //
+  //   const xPos = displaySize.width / 2 - width / 2
+  //   const yPos = displaySize.height / 2 - height / 2
+  //   context.fillRect(x, y, width, height)
+  //
+  //   //    context.arc(x, y, 30, 0, Math.PI * 2, true)
+  //   context.fill()
+  //
+  //   //   StackBlur.canvasRGBA(canvasRef.current, x, y, width, height, 10)
+  // }
 
   useEffect(() => {
     if (faceDetections) {
@@ -119,7 +124,11 @@ function BlurryFacesImage(props: IProps) {
       <div className={css.wrapper}>
         <img className={css.image} alt={"image"} src={props.imageUrl} ref={imageRef} />
         <canvas className={css.canvas} ref={canvasRef} />
-        <div className={css.blurFacesWrapper} ref={blurFacesWrapperRef} />
+        <div className={css.blurFacesWrapper} ref={blurFacesWrapperRef}>
+          {blurFacesPos.map((el, i) => (
+            <BlurSquare box={el} key={i} imageSize={imageRect} />
+          ))}
+        </div>
       </div>
     </div>
   )
