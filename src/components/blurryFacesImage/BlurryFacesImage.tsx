@@ -6,6 +6,7 @@ import * as faceapi from "face-api.js"
 import BlurZone from "../blurZone/BlurZone"
 import { div2Canvas } from "../../helpers/helpers"
 import { AppContext } from "../../index"
+import { Image } from "@wbe/react-image"
 
 interface IProps {
   className?: string
@@ -149,7 +150,7 @@ function BlurryFacesImage(props: IProps) {
         </div>
       </div>
 
-      <div onClick={createImageSource}>{"download image"}</div>
+      {/*<div onClick={createImageSource}>{"download image"}</div>*/}
     </div>
   )
 }

@@ -1,13 +1,32 @@
 @import (reference) "../../references.less";
 
 .root {
+  //  background-color: rgba(0,0,0,0.4);
+  //.minSize(100%);
+  .R(padding-bottom, 50);
+  position: relative;
 }
 
-.download {
-  .R(font-size, 20);
+.mainButton {
+  .absoluteCenter(x);
+  .R(top, 50);
+  position: fixed;
+  z-index: 1;
 }
 
-.image {
+.list {
+  position: relative;
+  .R(margin-top, 150);
+
+  margin: auto;
+  width: 80%;
+  @media (min-width: @breakpoint-tablet) {
+    width: 30%;
+  }
+}
+
+.item {
+  .R(margin-top, 50);
   position: relative;
   width: 100%;
 }

@@ -3,6 +3,12 @@ import React, { useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
 import { AppContext } from "../../index"
+import MainButton, {
+  EMainButtonAlignment,
+  EMainButtonColor,
+  EMainButtonIcon,
+  EMainButtonSize,
+} from "../mainButton/MainButton"
 
 interface IProps {
   className?: string
@@ -20,15 +26,27 @@ function BlurryFacesGallery(props: IProps) {
   return (
     <div className={merge([css.root, props.className])}>
       {images && (
-        <button className={css.download} onClick={createZipFiles}>
-          Download all images
-        </button>
+        <MainButton
+          label={"Download images collection"}
+          className={css.mainButton}
+          icon={EMainButtonIcon.ARROW}
+          alignment={EMainButtonAlignment.LEFT}
+          size={EMainButtonSize.BIG}
+          color={EMainButtonColor.WHITE}
+          onClick={createZipFiles}
+        />
       )}
 
-      {images?.map(
-        (el, i) =>
-          el.url && <BlurryFacesImage className={css.image} imageUrl={el.url} key={i} />
-      )}
+      <ul className={css.list}>
+        {images?.map(
+          (el, i) =>
+            el.url && (
+              <li className={css.item} key={i}>
+                <BlurryFacesImage className={css.image} imageUrl={el.url} />
+              </li>
+            )
+        )}
+      </ul>
     </div>
   )
 }
