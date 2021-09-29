@@ -1,10 +1,11 @@
 import css from "./BlurryFacesImage.module.less"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import BlurZone from "../blurZone/BlurZone"
 import { div2Canvas, getFilenameFromUrl } from "../../helpers/helpers"
+import { AppContext } from "../../index"
 
 interface IProps {
   className?: string
@@ -23,6 +24,8 @@ const debug = require("debug")(`front:${componentName}`)
  * + generate new image
  */
 function BlurryFacesImage(props: IProps) {
+  const { images, saveImages, saveImageSource } = useContext(AppContext)
+
   const rootRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef(null)
   const canvasRef = useRef(null)
@@ -57,7 +60,7 @@ function BlurryFacesImage(props: IProps) {
    * @param detections
    */
   const [blurZones, setBlurZones] = useState([])
-  const drawCanvas = (detections: FaceDetection[]): void => {
+  const createBlurZones = (detections: FaceDetection[]): void => {
     const displaySize = {
       width: imageRef.current.width,
       height: imageRef.current.height,
@@ -69,7 +72,6 @@ function BlurryFacesImage(props: IProps) {
 
     // resize the detected boxes in case your displayed image has a different size than the original
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
-
     // draw detections into the canvas
     // faceapi.draw.drawDetections(canvasRef.current, resizedDetections)
 
@@ -86,11 +88,47 @@ function BlurryFacesImage(props: IProps) {
     setBlurZones(boxs)
   }
 
+  /**
+   * Create blur zone
+   */
   useEffect(() => {
     if (faceDetections) {
-      drawCanvas(faceDetections)
+      createBlurZones(faceDetections)
     }
   }, [faceDetections, windowSize])
+
+  /**
+   * Create new image
+   */
+  const createImageSource = (): string => {
+    return div2Canvas(
+      imageSize.width,
+      imageSize.height,
+      imageRef.current,
+      blurZones,
+      getFilenameFromUrl(props.imageUrl)
+    )
+  }
+  const [imageSource, setImageSource] = useState<string>(null)
+  useEffect(() => {
+    if (props.imageUrl && imageSize) {
+      setImageSource(createImageSource())
+    }
+  }, [blurZones, imageSize, props.imageUrl])
+
+  useEffect(() => {
+    if (imageSource) {
+      const newImagesList = images.map((el) => {
+        if (el.url === props.imageUrl) {
+          el.data = imageSource
+          el.filename = getFilenameFromUrl(props.imageUrl)
+        }
+        return el
+      })
+      saveImages(newImagesList)
+      debug("images", images)
+    }
+  }, [imageSource, props.imageUrl])
 
   /**
    * remove Blur if clicked
@@ -99,19 +137,6 @@ function BlurryFacesImage(props: IProps) {
   const handleBlurZoneClick = (i: number) => {
     const update = blurZones.filter((e, index) => index !== i)
     setBlurZones(update)
-  }
-
-  /**
-   * Create image
-   */
-  const createImage = () => {
-    div2Canvas(
-      imageSize.width,
-      imageSize.height,
-      imageRef.current,
-      blurZones,
-      getFilenameFromUrl(props.imageUrl)
-    )
   }
 
   return (
@@ -131,7 +156,7 @@ function BlurryFacesImage(props: IProps) {
         </div>
       </div>
 
-      <div onClick={createImage}>{"download image"}</div>
+      <div onClick={createImageSource}>{"download image"}</div>
     </div>
   )
 }

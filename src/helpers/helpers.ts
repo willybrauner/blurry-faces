@@ -47,16 +47,17 @@ export const div2Canvas = (
     context.putImageData(imgData, zone.x * width, zone.y * height)
   })
 
-  const link = document.createElement("a")
-  link.download = `${filename}-blurry`
-  link.href = canvas.toDataURL("image/jpg")
-  link.click()
+  //const link = document.createElement("a")
+  //link.download = `${filename}-blurry`
+  const imgSource = canvas.toDataURL("image/jpg")
+  // link.href = imgSource
+  // link.click()
+  return imgSource
 }
 
 /**
  * getFilenameFromUrl
  */
 export const getFilenameFromUrl = (imageUrl: string) => {
-  const fileNameWithExtension = imageUrl.substring(imageUrl.lastIndexOf("/") + 1)
-  return fileNameWithExtension.split(".")[0]
+  return imageUrl.substring(imageUrl.lastIndexOf("/") + 1)
 }

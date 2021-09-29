@@ -1,10 +1,10 @@
 import css from "./InputImages.module.less"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
+import { AppContext, IImageData } from "../../index"
 
 interface IProps {
   className?: string
-  dispatchImageUrls: (images: string[]) => void
 }
 
 const componentName = "InputImages"
@@ -14,27 +14,20 @@ const debug = require("debug")(`front:${componentName}`)
  * @name InputImages
  */
 function InputImages(props: IProps) {
-  const [imageUrls, setImageUrls] = useState(null)
+  const { images, saveImages } = useContext(AppContext)
   const inputRef = useRef(null)
 
   /**
    * set selected images urls from input
    */
   const handleOnChange = (e) => {
-    const arr = []
+    const arr: IImageData[] = []
     for (let file of e.target.files) {
       const url = URL.createObjectURL(file)
-      arr.push(url)
+      arr.push({ url, data: null, filename: null })
     }
-    setImageUrls(arr)
+    saveImages(arr)
   }
-
-  /**
-   * dispatch urls to parent
-   */
-  useEffect(() => {
-    props.dispatchImageUrls(imageUrls)
-  }, [imageUrls])
 
   return (
     <div className={merge([css.root, props.className])}>

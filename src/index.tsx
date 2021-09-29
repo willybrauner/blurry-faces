@@ -2,22 +2,25 @@ import "./index.less"
 import ReactDOM from "react-dom"
 import * as React from "react"
 import App from "./components/app/App"
-import { routes } from "./routes"
-import { Router } from "@cher-ami/router"
-import VhHelper from "./lib/utils/VhHelper"
-;(function initApp() {
-  /**
-   * Add --vh var on <html> tag
-   */
-  new VhHelper()
+import { createContext } from "react"
 
-  /**
-   *  Start React App
-   */
-  ReactDOM.render(
-    <Router routes={routes} base={process.env.APP_BASE}>
-      <App />
-    </Router>,
-    document.getElementById("root")
-  )
-})()
+/**
+ * Create Global App context
+ * For store images
+ */
+export type IImageData = { filename?: string; url?: string; data?: string }
+
+export const AppContext = createContext<{
+  images: IImageData[]
+  saveImages: (images) => void
+  saveImageSource: (source, url) => void
+}>({
+  images: null,
+  saveImages: null,
+  saveImageSource: null,
+})
+
+/**
+ *  Start React App
+ */
+ReactDOM.render(<App />, document.getElementById("root"))

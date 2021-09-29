@@ -1,12 +1,13 @@
 import css from "./BlurryFacesGallery.module.less"
-import React from "react"
+import React, { useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
-import image1 from "../../images/classe-01.jpg"
+import { AppContext } from "../../index"
+import JSZip from "jszip"
+import { saveAs } from "file-saver"
 
 interface IProps {
   className?: string
-  imageUrls: string[]
 }
 
 const componentName = "BlurryFacesGallery"
@@ -16,14 +17,33 @@ const debug = require("debug")(`front:${componentName}`)
  * @name BlurryFacesGallery
  */
 function BlurryFacesGallery(props: IProps) {
-  //      const [createImages, setCreateImages] = useState()
+  const { images } = useContext(AppContext)
+
+  const createZipFiles = () => {
+    const zip = new JSZip()
+
+    for (let image of images) {
+      zip.file(image.filename + ".png", image.data, { base64: false })
+    }
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      debug("content", content)
+      saveAs(content, "blurry-images.zip")
+    })
+  }
+
   return (
     <div className={merge([css.root, props.className])}>
-      <button className={css.download}>Download all images</button>
+      {images && (
+        <button className={css.download} onClick={createZipFiles}>
+          Download all images
+        </button>
+      )}
 
-      {props.imageUrls?.map((el, i) => (
-        <BlurryFacesImage className={css.image} imageUrl={el} key={i} />
-      ))}
+      {images?.map(
+        (el, i) =>
+          el.url && <BlurryFacesImage className={css.image} imageUrl={el.url} key={i} />
+      )}
     </div>
   )
 }

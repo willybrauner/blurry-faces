@@ -1,28 +1,36 @@
 import css from "./App.module.less"
 import React, { useState } from "react"
-import image1 from "../../images/classe-01.jpg"
-import image2 from "../../images/classe-02.jpg"
 import BlurryFacesGallery from "../blurryFacesGallery/BlurryFacesGallery"
 import InputImages from "../inputImages/InputImages"
-import Output from "../output/Output"
+import { AppContext, IImageData } from "../../index"
 
 const componentName = "App"
+const debug = require("debug")(`front:${componentName}`)
 
-export interface IProps {}
+function App() {
+  const [images, setImages] = useState<IImageData[]>(null)
 
-function App(props: IProps) {
-  // get image urls dispatched from input
-  const [imageUrls, setImageUrls] = useState<string[]>(null)
+  const saveImages = (imgs: IImageData[]): void => {
+    setImages(imgs)
+  }
+
+  const saveImageSource = (imageSource: string, imageUrl: string): void => {
+    const newImagesList = images.map((el) => {
+      if (el.url === imageUrl) el.data = imageSource
+      return el
+    })
+    saveImages(newImagesList)
+  }
+
   return (
-    <div className={css.root}>
-      <div className={css.wrapper}>
-        <InputImages dispatchImageUrls={(urls: string[]) => setImageUrls(urls)} />
-        {/* TODO binder le state */}
-        <BlurryFacesGallery className={css.gallery} imageUrls={imageUrls} />
-
-        {/*<Output className={css.output} />*/}
+    <AppContext.Provider value={{ images, saveImages, saveImageSource }}>
+      <div className={css.root}>
+        <div className={css.wrapper}>
+          <InputImages className={css.inputImages} />
+          <BlurryFacesGallery className={css.gallery} />
+        </div>
       </div>
-    </div>
+    </AppContext.Provider>
   )
 }
 

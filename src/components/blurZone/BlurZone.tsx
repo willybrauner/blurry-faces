@@ -23,8 +23,6 @@ const debug = require("debug")(`front:${componentName}`)
  * @name BlurZone
  */
 function BlurZone(props: IProps) {
-  debug(props.box)
-
   const style = {
     width: Math.floor(props.box.width * props.imageSize.width) + "px",
     height: Math.floor(props.box.height * props.imageSize.height) + "px",
