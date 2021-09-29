@@ -4,7 +4,7 @@ import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import BlurZone from "../blurZone/BlurZone"
-import { div2Canvas, getFilenameFromUrl } from "../../helpers/helpers"
+import { div2Canvas } from "../../helpers/helpers"
 import { AppContext } from "../../index"
 
 interface IProps {
@@ -101,13 +101,7 @@ function BlurryFacesImage(props: IProps) {
    * Create new image
    */
   const createImageSource = (): string => {
-    return div2Canvas(
-      imageSize.width,
-      imageSize.height,
-      imageRef.current,
-      blurZones,
-      getFilenameFromUrl(props.imageUrl)
-    )
+    return div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
   }
   const [imageSource, setImageSource] = useState<string>(null)
   useEffect(() => {
@@ -121,7 +115,6 @@ function BlurryFacesImage(props: IProps) {
       const newImagesList = images.map((el) => {
         if (el.url === props.imageUrl) {
           el.data = imageSource
-          el.filename = getFilenameFromUrl(props.imageUrl)
         }
         return el
       })

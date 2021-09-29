@@ -14,7 +14,7 @@ const debug = require("debug")(`front:${componentName}`)
  * @name InputImages
  */
 function InputImages(props: IProps) {
-  const { images, saveImages } = useContext(AppContext)
+  const { saveImages } = useContext(AppContext)
   const inputRef = useRef(null)
 
   /**
@@ -23,8 +23,7 @@ function InputImages(props: IProps) {
   const handleOnChange = (e) => {
     const arr: IImageData[] = []
     for (let file of e.target.files) {
-      const url = URL.createObjectURL(file)
-      arr.push({ url, data: null, filename: null })
+      arr.push({ url: URL.createObjectURL(file), filename: file.name, data: null })
     }
     saveImages(arr)
   }

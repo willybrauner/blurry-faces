@@ -26,8 +26,7 @@ export const div2Canvas = (
   width: number,
   height: number,
   img: HTMLImageElement,
-  blurZone: TBlurZone[],
-  filename: string
+  blurZone: TBlurZone[]
 ) => {
   const canvas = document.createElement("canvas")
   canvas.width = width
@@ -49,7 +48,8 @@ export const div2Canvas = (
 
   //const link = document.createElement("a")
   //link.download = `${filename}-blurry`
-  const imgSource = canvas.toDataURL("image/jpg")
+  const imgSource = canvas.toDataURL("image/png", [0.0, 1.0]).split(",")[1]
+  //  .replace("image/png", "image/octet-stream")
   // link.href = imgSource
   // link.click()
   return imgSource

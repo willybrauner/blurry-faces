@@ -3,8 +3,6 @@ import React, { useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
 import { AppContext } from "../../index"
-import JSZip from "jszip"
-import { saveAs } from "file-saver"
 
 interface IProps {
   className?: string
@@ -17,20 +15,7 @@ const debug = require("debug")(`front:${componentName}`)
  * @name BlurryFacesGallery
  */
 function BlurryFacesGallery(props: IProps) {
-  const { images } = useContext(AppContext)
-
-  const createZipFiles = () => {
-    const zip = new JSZip()
-
-    for (let image of images) {
-      zip.file(image.filename + ".png", image.data, { base64: false })
-    }
-
-    zip.generateAsync({ type: "blob" }).then((content) => {
-      debug("content", content)
-      saveAs(content, "blurry-images.zip")
-    })
-  }
+  const { images, createZipFiles } = useContext(AppContext)
 
   return (
     <div className={merge([css.root, props.className])}>

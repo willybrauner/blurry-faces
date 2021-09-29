@@ -12,12 +12,14 @@ export type IImageData = { filename?: string; url?: string; data?: string }
 
 export const AppContext = createContext<{
   images: IImageData[]
-  saveImages: (images) => void
-  saveImageSource: (source, url) => void
+  saveImages: (images: IImageData[]) => void
+  saveImageSource: (source: string, url: string) => void
+  createZipFiles: () => void
 }>({
   images: null,
   saveImages: null,
   saveImageSource: null,
+  createZipFiles: null,
 })
 
 /**
