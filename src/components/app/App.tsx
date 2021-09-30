@@ -12,7 +12,7 @@ const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
-  const [images, setImages] = useState<IImageData[]>()
+  const [images, setImages] = useState<IImageData[]>([])
   // loader
   const [isWatingSources, setIsWaitingSources] = useState<boolean>(false)
 
