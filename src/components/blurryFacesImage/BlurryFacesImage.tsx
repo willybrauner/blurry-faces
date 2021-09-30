@@ -32,8 +32,6 @@ function BlurryFacesImage(props: IProps) {
   const canvasRef = useRef(null)
   const windowSize = useWindowSize()
 
-  const [imageSize, setImageSize] = useState<{ width: number; height: number }>(null)
-
   /**
    * Get face detections
    */
@@ -50,11 +48,25 @@ function BlurryFacesImage(props: IProps) {
     return faceapi.detectAllFaces(imageRef.current, options)
   }
 
+  const [imageIsReady, setImageIsReady] = useState(false)
   useEffect(() => {
-    getFaceDetections().then((detections: FaceDetection[]) => {
-      setFaceDetections(detections)
-    })
+    getFaceDetections()
+      .then((detections: FaceDetection[]) => {
+        setFaceDetections(detections)
+        setImageIsReady(true)
+      })
+      .catch((e) => {
+        setImageIsReady(true)
+      })
   }, [props.imageUrl])
+
+  const [imageSize, setImageSize] = useState<{ width: number; height: number }>(null)
+  useEffect(() => {
+    setImageSize({
+      width: imageRef.current.width,
+      height: imageRef.current.height,
+    })
+  }, [windowSize, imageIsReady])
 
   /**
    * Draw canvas
@@ -63,14 +75,8 @@ function BlurryFacesImage(props: IProps) {
   const [blurZones, setBlurZones] = useState([])
   const [blurZonesBuilt, setBlurZonesBuilt] = useState([])
   const createBlurZones = (detections: FaceDetection[]): void => {
-    const displaySize = {
-      width: imageRef.current.width,
-      height: imageRef.current.height,
-    }
-    setImageSize(displaySize)
-
     // resize the overlay canvas to the input dimensions
-    faceapi.matchDimensions(canvasRef.current, displaySize)
+    faceapi.matchDimensions(canvasRef.current, imageSize)
 
     // resize the detected boxes in case your displayed image has a different size than the original
     //const resizedDetections = faceapi.resizeResults(detections, displaySize)
@@ -160,21 +166,30 @@ function BlurryFacesImage(props: IProps) {
   return (
     <div className={css.root} ref={rootRef}>
       <div className={css.wrapper}>
-        <img className={css.image} alt={"image"} src={props.imageUrl} ref={imageRef} />
-        <canvas className={css.canvas} ref={canvasRef} />
-        <BlurZoneBuilder
-          key={`blur-${blurZones.length + blurZonesBuilt.length}`}
-          className={css.blurZoneBuilder}
-          dispatchNewZone={(e) => registerNewZone(e)}
-          imageSize={imageSize}
-          blurZoneAI={blurZones}
-          blurZoneBuilt={blurZonesBuilt}
-          handleBlurZoneClick={(i) => handleBlurZoneClick(i)}
-          handleBlurZoneBuiltClick={(i) => handleBlurZoneBuiltClick(i)}
+        <img
+          className={[css.image, imageIsReady && css.image_isReady].join(" ")}
+          alt={"image"}
+          src={props.imageUrl}
+          ref={imageRef}
         />
-      </div>
+        <canvas className={css.canvas} ref={canvasRef} />
 
-      {/*<div onClick={createImageSource}>{"download image"}</div>*/}
+        {imageIsReady && (
+          <BlurZoneBuilder
+            key={
+              `blur-${blurZones.length + blurZonesBuilt.length}` +
+              `-${imageSize?.width}-${imageSize?.height}`
+            }
+            className={css.blurZoneBuilder}
+            dispatchNewZone={(e) => registerNewZone(e)}
+            imageSize={imageSize}
+            blurZoneAI={blurZones}
+            blurZoneBuilt={blurZonesBuilt}
+            handleBlurZoneClick={(i) => handleBlurZoneClick(i)}
+            handleBlurZoneBuiltClick={(i) => handleBlurZoneBuiltClick(i)}
+          />
+        )}
+      </div>
     </div>
   )
 }

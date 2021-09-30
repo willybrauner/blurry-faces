@@ -103,6 +103,8 @@ function BlurZoneBuilder(props: IProps) {
 
     if (!height || !width) return
 
+    debug("props.imageSize", props.imageSize)
+
     props.dispatchNewZone({
       x: (x2.current < x1.current ? x2.current : x1.current) / props.imageSize.width,
       y: (y2.current < y1.current ? y2.current : y1.current) / props.imageSize.height,
@@ -112,8 +114,6 @@ function BlurZoneBuilder(props: IProps) {
   }
 
   useEffect(() => {
-    debug("blurZoneIsHover", blurZoneIsHover)
-
     rootRef.current?.addEventListener("mousedown", handleMousedown, { passive: true })
     rootRef.current?.addEventListener("mousemove", handleMousemove, { passive: true })
     rootRef.current?.addEventListener("mouseup", handleMouseup, { passive: true })
@@ -129,24 +129,26 @@ function BlurZoneBuilder(props: IProps) {
   return (
     <div className={merge([css.root, props.className])} ref={rootRef}>
       <div className={css.blurFacesWrapper}>
-        {props.blurZoneAI?.map((el, i) => (
-          <BlurZone
-            box={el}
-            key={i}
-            imageSize={props.imageSize}
-            onClick={() => props.handleBlurZoneClick(i)}
-            dispatchIsHover={(isHover) => setBlurZoneIsHover(isHover)}
-          />
-        ))}
-        {props.blurZoneBuilt?.map((el, i) => (
-          <BlurZone
-            box={el}
-            key={i}
-            imageSize={props.imageSize}
-            onClick={() => props.handleBlurZoneBuiltClick(i)}
-            dispatchIsHover={(isHover) => setBlurZoneIsHover(isHover)}
-          />
-        ))}
+        {props.blurZoneAI?.length > 0 &&
+          props.blurZoneAI?.map((el, i) => (
+            <BlurZone
+              box={el}
+              key={i}
+              imageSize={props.imageSize}
+              onClick={() => props.handleBlurZoneClick(i)}
+              dispatchIsHover={(isHover) => setBlurZoneIsHover(isHover)}
+            />
+          ))}
+        {props.blurZoneBuilt?.length > 0 &&
+          props.blurZoneBuilt?.map((el, i) => (
+            <BlurZone
+              box={el}
+              key={i}
+              imageSize={props.imageSize}
+              onClick={() => props.handleBlurZoneBuiltClick(i)}
+              dispatchIsHover={(isHover) => setBlurZoneIsHover(isHover)}
+            />
+          ))}
       </div>
 
       <div className={css.rect} ref={rectRef} />
