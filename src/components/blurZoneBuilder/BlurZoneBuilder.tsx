@@ -6,6 +6,7 @@ import { TBlurZone } from "../blurZone/BlurZone"
 interface IProps {
   className?: string
   dispatchNewZone: (e: TBlurZone) => void
+  imageSize: { width: number; height: number }
 }
 
 const componentName = "BlurZoneBuilder"
@@ -65,18 +66,16 @@ function BlurZoneBuilder(props: IProps) {
   }
 
   const handleMouseup = (e): void => {
-    // reset
-    // x1.current = 0
-    // y1.current = 0
-    // x2.current = 0
-    // y2.current = 0
-    rectRef.current.style.border = null
+    //    rectRef.current.style.border = null
+
+    const width = Math.abs(x2.current - x1.current)
+    const height = Math.abs(y2.current - y1.current)
 
     props.dispatchNewZone({
-      width: Math.abs(x2.current - x1.current),
-      height: Math.abs(y2.current - y1.current),
-      x: x1.current,
-      y: x1.current,
+      x: (x2.current < x1.current ? x2.current : x1.current) / props.imageSize.width,
+      y: (y2.current < y1.current ? y2.current : y1.current) / props.imageSize.height,
+      width: width / props.imageSize.width,
+      height: height / props.imageSize.height,
     })
   }
 

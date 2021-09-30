@@ -62,6 +62,7 @@ function BlurryFacesImage(props: IProps) {
    * @param detections
    */
   const [blurZones, setBlurZones] = useState([])
+  const [blurZonesBuilt, setBlurZonesBuilt] = useState([])
   const createBlurZones = (detections: FaceDetection[]): void => {
     const displaySize = {
       width: imageRef.current.width,
@@ -73,22 +74,22 @@ function BlurryFacesImage(props: IProps) {
     faceapi.matchDimensions(canvasRef.current, displaySize)
 
     // resize the detected boxes in case your displayed image has a different size than the original
-    const resizedDetections = faceapi.resizeResults(detections, displaySize)
+    //const resizedDetections = faceapi.resizeResults(detections, displaySize)
     // draw detections into the canvas
     // faceapi.draw.drawDetections(canvasRef.current, resizedDetections)
 
     // blur result
     debug("detections", detections)
     // normalise box size
-    const boxs = detections.map((detection) => ({
-      x: detection.box.x / detection.imageDims.width,
-      y: detection.box.y / detection.imageDims.height,
-      width: detection.box.width / detection.imageDims.width,
-      height: detection.box.height / detection.imageDims.height,
+    const zones = detections.map((zone) => ({
+      x: zone.box.x / zone.imageDims.width,
+      y: zone.box.y / zone.imageDims.height,
+      width: zone.box.width / zone.imageDims.width,
+      height: zone.box.height / zone.imageDims.height,
     }))
 
-    debug("boxs", boxs)
-    setBlurZones(boxs)
+    debug("zones from AI", zones)
+    setBlurZones(zones)
   }
 
   /**
@@ -106,9 +107,9 @@ function BlurryFacesImage(props: IProps) {
   const [imageSource, setImageSource] = useState<string>(null)
   useEffect(() => {
     if (props.imageUrl && imageSize) {
-      setImageSource(
-        div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
-      )
+      // setImageSource(
+      //   div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
+      // )
     }
   }, [blurZones, imageSize, props.imageUrl])
 
@@ -134,21 +135,31 @@ function BlurryFacesImage(props: IProps) {
   }
 
   const registerNewZone = (e: TBlurZone) => {
-    debug("registerNewZone > blurZones", blurZones)
-    setBlurZones(blurZones.concat(e))
+    debug("registerNewZone > blurZones")
+    setBlurZonesBuilt(blurZonesBuilt.concat(e))
   }
 
   useEffect(() => {
     debug("blurZones", blurZones)
   }, [blurZones])
 
+  useEffect(() => {
+    debug("blurZonesBuilt", blurZonesBuilt)
+  }, [blurZonesBuilt])
+
   return (
     <div className={css.root} ref={rootRef}>
       <div className={css.wrapper}>
         <img className={css.image} alt={"image"} src={props.imageUrl} ref={imageRef} />
         <canvas className={css.canvas} ref={canvasRef} />
+        <BlurZoneBuilder
+          key={`blur-${blurZones.length + blurZonesBuilt.length}`}
+          className={css.blurZoneBuilder}
+          dispatchNewZone={(e) => registerNewZone(e)}
+          imageSize={imageSize}
+        />
         <div className={css.blurFacesWrapper}>
-          {blurZones.map((el, i) => (
+          {[...(blurZones || []), ...(blurZonesBuilt || [])].map((el, i) => (
             <BlurZone
               box={el}
               key={i}
@@ -157,11 +168,6 @@ function BlurryFacesImage(props: IProps) {
             />
           ))}
         </div>
-        <BlurZoneBuilder
-          key={`blur-${blurZones.length}`}
-          className={css.blurZoneBuilder}
-          dispatchNewZone={(e) => registerNewZone(e)}
-        />
       </div>
 
       {/*<div onClick={createImageSource}>{"download image"}</div>*/}
