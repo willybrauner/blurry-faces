@@ -3,7 +3,6 @@ import ReactDOM from "react-dom"
 import * as React from "react"
 import App from "./components/app/App"
 import { createContext } from "react"
-import sample from "images/example.jpg"
 import { TBlurZone } from "./components/blurZone/BlurZone"
 
 /**
@@ -23,11 +22,13 @@ export type IImageData = {
 export const AppContext = createContext<{
   images: IImageData[]
   saveImages: (images: IImageData[]) => void
+  resetImages: () => void
   saveImageSource: (source: string, url: string) => void
   createZipFiles: () => Promise<void>
   isWatingSources: boolean
 }>({
   images: null,
+  resetImages: null,
   saveImages: null,
   saveImageSource: null,
   createZipFiles: null,

@@ -1,23 +1,66 @@
 @import (reference) "../../references.less";
 
 .root {
-  //  background-color: rgba(0,0,0,0.4);
-  //.minSize(100%);
   .R(padding-bottom, 50);
   position: relative;
 }
 
-.mainButton {
-  .absoluteCenter(x);
-  .R(top, 50);
+.header {
+  top: 0;
+  left: 0;
+  right: 0;
   position: fixed;
+  .R(height, 80);
+  background: #0e203e;
   z-index: 1;
+  .flex(flex, row, wrap, center, center);
+}
+
+.mainButton {
+  cursor: pointer;
+  position: relative;
+  color: @color-red;
+  .R(font-size, 20);
+
+  margin: auto;
+  .flex(flex, row, wrap, center, center);
+  transition: all ease-out 200ms;
+
+  &:active {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  &:hover {
+    color: @color-white;
+    svg {
+      .R(margin-left, 15);
+      path {
+        fill: @color-white;
+      }
+    }
+  }
+
+  svg {
+    .R(margin-left, 10);
+    transition: all ease-out 200ms;
+    path {
+      transition: all ease-out 200ms;
+      fill: @color-red;
+    }
+  }
+}
+
+.restart {
+  cursor: pointer;
+  .absoluteCenter(y);
+  .R(right, 30);
+
+  color: @color-red;
+  .R(font-size, 20);
 }
 
 .list {
-  position: relative;
-  .R(margin-top, 150);
-
+  .R(margin-top, 80);
   margin: auto;
   width: 80%;
   @media (min-width: @breakpoint-tablet) {

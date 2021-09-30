@@ -5,7 +5,6 @@ import InputImages from "../inputImages/InputImages"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
-import sample from "../../images/example.jpg"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
 
@@ -23,6 +22,9 @@ function App() {
    */
   const saveImages = (imgs: IImageData[]): void => {
     setImages(imgs)
+  }
+  const resetImages = (): void => {
+    setImages([])
   }
 
   /**
@@ -68,25 +70,26 @@ function App() {
       })
       .then((content) => {
         setIsWaitingSources(false)
-
         saveAs(content, "blurry-images.zip")
       })
   }
 
   return (
     <AppContext.Provider
-      value={{ images, saveImages, saveImageSource, createZipFiles, isWatingSources }}
+      value={{
+        images,
+        saveImages,
+        saveImageSource,
+        createZipFiles,
+        resetImages,
+        isWatingSources,
+      }}
     >
       <div className={css.root}>
-        <div className={css.wrapper}>
-          {/* INPUT */}
-          <InputImages className={css.input} />
-
-          {/* GALLERY */}
-          <BlurryFacesGallery className={css.gallery} />
-        </div>
+        {images?.length === 0 && <InputImages className={css.input} />}
+        {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
       </div>
-      {/* LOADER */}
+
       {isWatingSources && <Loader />}
     </AppContext.Provider>
   )

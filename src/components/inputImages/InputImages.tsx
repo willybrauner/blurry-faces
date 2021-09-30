@@ -2,13 +2,7 @@ import css from "./InputImages.module.less"
 import React, { useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
-import MainButton, {
-  EMainButtonAlignment,
-  EMainButtonColor,
-  EMainButtonIcon,
-  EMainButtonSize,
-} from "../mainButton/MainButton"
-import { TBlurZone } from "../blurZone/BlurZone"
+import MainButton, { EMainButtonColor, EMainButtonSize } from "../mainButton/MainButton"
 
 interface IProps {
   className?: string
@@ -46,10 +40,8 @@ function InputImages(props: IProps) {
   return (
     <div className={merge([css.root, props.className])}>
       <MainButton
-        label={"Select your images"}
+        label={"Upload your images"}
         className={css.mainButton}
-        icon={EMainButtonIcon.ARROW}
-        alignment={EMainButtonAlignment.LEFT}
         size={EMainButtonSize.BIG}
         color={EMainButtonColor.RED}
         onClick={() => inputRef.current.click()}
