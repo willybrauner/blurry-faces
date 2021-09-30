@@ -32,7 +32,7 @@ function BlurryFacesGallery(props: IProps) {
         </button>
 
         <button className={css.restart} onClick={resetImages}>
-          Restart
+          {"restart"}
         </button>
       </header>
       <section className={css.content}>

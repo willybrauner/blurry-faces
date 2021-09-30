@@ -95,13 +95,12 @@
   }
 }
 
-
 /**
  * flex
  * (à placer sur le parent)
  */
 .flex
-(@display:flex, @direction:row, @wrap:wrap, @justifyContent:flex-start, @alignItems:flex-start, @firstChildGutter:0) {
+  (@display:flex, @direction:row, @wrap:wrap, @justifyContent:flex-start, @alignItems:flex-start, @firstChildGutter:0) {
   display: @display; // flex | inline-flex
   flex-direction: @direction; // row | row-reverse | column | column-reverse
   flex-wrap: @wrap; // nowrap | wrap | wrap-reverse
@@ -113,7 +112,6 @@
     margin-left: -@firstChildGutter;
   }
 }
-
 
 /**
  * Place an element absolute on top left

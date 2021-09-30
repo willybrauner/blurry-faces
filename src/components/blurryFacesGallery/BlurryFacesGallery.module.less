@@ -20,7 +20,7 @@
   cursor: pointer;
   position: relative;
   color: @color-red;
-  .R(font-size, 20);
+  .R(font-size, 16, 18);
 
   margin: auto;
   .flex(flex, row, wrap, center, center);
@@ -33,7 +33,7 @@
   &:hover {
     color: @color-white;
     svg {
-      .R(margin-left, 15);
+      .R(margin-left, 11, 12);
       path {
         fill: @color-white;
       }
@@ -41,7 +41,7 @@
   }
 
   svg {
-    .R(margin-left, 10);
+    .R(margin-left, 8, 10);
     transition: all ease-out 200ms;
     path {
       transition: all ease-out 200ms;
@@ -56,7 +56,21 @@
   .R(right, 30);
 
   color: @color-red;
-  .R(font-size, 20);
+  .R(font-size, 16, 18);
+  transition: all ease-out 200ms;
+
+  &:active {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  &:hover {
+    color: @color-white;
+    svg {
+      path {
+        fill: @color-white;
+      }
+    }
+  }
 }
 
 .list {
