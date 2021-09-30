@@ -27,37 +27,37 @@ export const div2Canvas = (
   height: number,
   img: HTMLImageElement,
   blurZone: TBlurZone[]
-) => {
-  const canvas = document.createElement("canvas")
-  canvas.width = width
-  canvas.height = height
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (width === 0 || height === 0) return
 
-  const context = canvas.getContext("2d")
-  context.drawImage(img, 0, 0, canvas.width, (canvas.width * img.height) / img.width)
+    const canvas = document.createElement("canvas")
+    canvas.width = width
+    canvas.height = height
+    const context = canvas.getContext("2d")
+    const $fakeImg = new Image()
 
-  blurZone.forEach((zone) => {
-    const imgData = context.getImageData(
-      zone.x * width,
-      zone.y * height,
-      zone.width * width,
-      zone.height * height
-    )
-    blur(imgData)
-    context.putImageData(imgData, zone.x * width, zone.y * height)
+    // start preload
+    $fakeImg.src = canvas.toDataURL("image/jpg")
+
+    // when is loaded
+    $fakeImg.onload = () => {
+      context.drawImage(img, 0, 0, canvas.width, (canvas.width * img.height) / img.width)
+
+      // set blur zone on image
+      blurZone?.forEach((zone) => {
+        const imgData = context.getImageData(
+          zone.x * width || 1,
+          zone.y * height || 1,
+          zone.width * width || 1,
+          zone.height * height || 1
+        )
+        blur(imgData)
+        context.putImageData(imgData, zone.x * width, zone.y * height)
+      })
+
+      // return
+      resolve(canvas.toDataURL("image/jpg", [0.0, 1.0]).split(",")[1])
+    }
   })
-
-  //const link = document.createElement("a")
-  //link.download = `${filename}-blurry`
-  const imgSource = canvas.toDataURL("image/png", [0.0, 1.0]).split(",")[1]
-  //  .replace("image/png", "image/octet-stream")
-  // link.href = imgSource
-  // link.click()
-  return imgSource
-}
-
-/**
- * getFilenameFromUrl
- */
-export const getFilenameFromUrl = (imageUrl: string) => {
-  return imageUrl.substring(imageUrl.lastIndexOf("/") + 1)
 }

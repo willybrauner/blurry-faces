@@ -8,6 +8,7 @@ import MainButton, {
   EMainButtonIcon,
   EMainButtonSize,
 } from "../mainButton/MainButton"
+import { TBlurZone } from "../blurZone/BlurZone"
 
 interface IProps {
   className?: string
@@ -29,7 +30,15 @@ function InputImages(props: IProps) {
   const handleOnChange = (e) => {
     const arr: IImageData[] = []
     for (let file of e.target.files) {
-      arr.push({ url: URL.createObjectURL(file), filename: file.name, data: null })
+      arr.push({
+        url: URL.createObjectURL(file),
+        filename: file.name,
+        data: null,
+        width: null,
+        height: null,
+        $img: null,
+        fullBlurZones: null,
+      })
     }
     saveImages(arr)
   }

@@ -23,9 +23,10 @@ const debug = require("debug")(`front:${componentName}`)
 function BlurryFacesGallery(props: IProps) {
   const { images, createZipFiles } = useContext(AppContext)
 
+  debug("images", images)
   return (
     <div className={merge([css.root, props.className])}>
-      {images && (
+      {images?.length > 0 && (
         <MainButton
           label={"Download images collection"}
           className={css.mainButton}
@@ -38,14 +39,11 @@ function BlurryFacesGallery(props: IProps) {
       )}
 
       <ul className={css.list}>
-        {images?.map(
-          (el, i) =>
-            el.url && (
-              <li className={css.item} key={i}>
-                <BlurryFacesImage className={css.image} imageUrl={el.url} />
-              </li>
-            )
-        )}
+        {images?.map((el, i) => (
+          <li className={css.item} key={i}>
+            <BlurryFacesImage className={css.image} imageUrl={el.url} />
+          </li>
+        ))}
       </ul>
     </div>
   )

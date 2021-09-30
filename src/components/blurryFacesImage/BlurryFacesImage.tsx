@@ -1,13 +1,12 @@
 import css from "./BlurryFacesImage.module.less"
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
-import BlurZone, { TBlurZone } from "../blurZone/BlurZone"
-import { div2Canvas } from "../../helpers/helpers"
+import { TBlurZone } from "../blurZone/BlurZone"
 import { AppContext } from "../../index"
-import { Image } from "@wbe/react-image"
 import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
+import { div2Canvas } from "../../helpers/helpers"
 
 interface IProps {
   className?: string
@@ -103,35 +102,46 @@ function BlurryFacesImage(props: IProps) {
 
   /**
    * Create new image with blur zones
+   *
+   * TODO on veut executer cette fonction uniquement quand on click sur tout télécharger
    */
-  const [imageSource, setImageSource] = useState<string>(null)
-  useEffect(() => {
-    if (props.imageUrl && imageSize) {
-      // setImageSource(
-      //   div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
-      // )
-    }
-  }, [blurZones, imageSize, props.imageUrl])
 
   useEffect(() => {
-    if (imageSource) {
-      const newImagesList = images.map((el) => {
-        if (el.url === props.imageUrl) {
-          el.data = imageSource
-        }
-        return el
-      })
-      saveImages(newImagesList)
-    }
-  }, [imageSource, props.imageUrl])
+    // get all zones
+    const fullBlurZones = [...(blurZones || []), ...(blurZonesBuilt || [])]
+    if (!props.imageUrl || !imageSize || !fullBlurZones) return
+
+    // prepare new image list with sources
+    const newImagesList = images.map((el) => {
+      if (el.url === props.imageUrl) {
+        el["width"] = imageSize.width
+        el["height"] = imageSize.height
+        el["$img"] = imageRef.current
+        el["fullBlurZones"] = fullBlurZones
+        //            el.data = source
+      }
+      return el
+    })
+
+    // au lieu de save image, on pourrait save
+    saveImages(newImagesList)
+  }, [blurZonesBuilt, blurZones, imageSize, props.imageUrl])
 
   /**
-   * remove Blur if clicked
+   * remove zone on click
    * @param i
    */
   const handleBlurZoneClick = (i: number) => {
     const update = blurZones.filter((e, index) => index !== i)
     setBlurZones(update)
+  }
+  /**
+   * remove zone on click
+   * @param i
+   */
+  const handleBlurZoneBuiltClick = (i: number) => {
+    const updateZoneBuilt = blurZonesBuilt.filter((e, index) => index !== i)
+    setBlurZonesBuilt(updateZoneBuilt)
   }
 
   const registerNewZone = (e: TBlurZone) => {
@@ -157,17 +167,11 @@ function BlurryFacesImage(props: IProps) {
           className={css.blurZoneBuilder}
           dispatchNewZone={(e) => registerNewZone(e)}
           imageSize={imageSize}
+          blurZoneAI={blurZones}
+          blurZoneBuilt={blurZonesBuilt}
+          handleBlurZoneClick={(i) => handleBlurZoneClick(i)}
+          handleBlurZoneBuiltClick={(i) => handleBlurZoneBuiltClick(i)}
         />
-        <div className={css.blurFacesWrapper}>
-          {[...(blurZones || []), ...(blurZonesBuilt || [])].map((el, i) => (
-            <BlurZone
-              box={el}
-              key={i}
-              imageSize={imageSize}
-              onClick={() => handleBlurZoneClick(i)}
-            />
-          ))}
-        </div>
       </div>
 
       {/*<div onClick={createImageSource}>{"download image"}</div>*/}
