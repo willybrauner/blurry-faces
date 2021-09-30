@@ -1,12 +1,13 @@
 import css from "./BlurryFacesImage.module.less"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
-import BlurZone from "../blurZone/BlurZone"
+import BlurZone, { TBlurZone } from "../blurZone/BlurZone"
 import { div2Canvas } from "../../helpers/helpers"
 import { AppContext } from "../../index"
 import { Image } from "@wbe/react-image"
+import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
 
 interface IProps {
   className?: string
@@ -85,6 +86,7 @@ function BlurryFacesImage(props: IProps) {
       width: detection.box.width / detection.imageDims.width,
       height: detection.box.height / detection.imageDims.height,
     }))
+
     debug("boxs", boxs)
     setBlurZones(boxs)
   }
@@ -99,15 +101,14 @@ function BlurryFacesImage(props: IProps) {
   }, [faceDetections, windowSize])
 
   /**
-   * Create new image
+   * Create new image with blur zones
    */
-  const createImageSource = (): string => {
-    return div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
-  }
   const [imageSource, setImageSource] = useState<string>(null)
   useEffect(() => {
     if (props.imageUrl && imageSize) {
-      setImageSource(createImageSource())
+      setImageSource(
+        div2Canvas(imageSize.width, imageSize.height, imageRef.current, blurZones)
+      )
     }
   }, [blurZones, imageSize, props.imageUrl])
 
@@ -120,7 +121,6 @@ function BlurryFacesImage(props: IProps) {
         return el
       })
       saveImages(newImagesList)
-      debug("images", images)
     }
   }, [imageSource, props.imageUrl])
 
@@ -132,6 +132,15 @@ function BlurryFacesImage(props: IProps) {
     const update = blurZones.filter((e, index) => index !== i)
     setBlurZones(update)
   }
+
+  const registerNewZone = (e: TBlurZone) => {
+    debug("registerNewZone > blurZones", blurZones)
+    setBlurZones(blurZones.concat(e))
+  }
+
+  useEffect(() => {
+    debug("blurZones", blurZones)
+  }, [blurZones])
 
   return (
     <div className={css.root} ref={rootRef}>
@@ -148,6 +157,11 @@ function BlurryFacesImage(props: IProps) {
             />
           ))}
         </div>
+        <BlurZoneBuilder
+          key={`blur-${blurZones.length}`}
+          className={css.blurZoneBuilder}
+          dispatchNewZone={(e) => registerNewZone(e)}
+        />
       </div>
 
       {/*<div onClick={createImageSource}>{"download image"}</div>*/}

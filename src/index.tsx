@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import * as React from "react"
 import App from "./components/app/App"
 import { createContext } from "react"
+import sample from "images/example.jpg"
 
 /**
  * Create Global App context

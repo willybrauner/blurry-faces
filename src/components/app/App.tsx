@@ -5,13 +5,18 @@ import InputImages from "../inputImages/InputImages"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
+import sample from "../../images/example.jpg"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
-  const [images, setImages] = useState<IImageData[]>(null)
-
+  const [images, setImages] = useState<IImageData[]>([
+    {
+      filename: "sample.jpg",
+      url: sample,
+    },
+  ])
   /**
    * Save images in context
    * @param imgs
@@ -59,7 +64,7 @@ function App() {
     <AppContext.Provider value={{ images, saveImages, saveImageSource, createZipFiles }}>
       <div className={css.root}>
         <div className={css.wrapper}>
-          <InputImages className={css.inputImages} />
+          <InputImages className={css.input} />
           <BlurryFacesGallery className={css.gallery} />
         </div>
       </div>
