@@ -7,6 +7,7 @@ import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
+import Logo from "../logo/Logo"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -85,6 +86,10 @@ function App() {
         isWatingSources,
       }}
     >
+      <header>
+        <Logo className={css.logo} />
+      </header>
+
       <div className={css.root}>
         {images?.length === 0 && <InputImages className={css.input} />}
         {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}

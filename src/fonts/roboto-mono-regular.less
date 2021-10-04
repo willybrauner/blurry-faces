@@ -1,0 +1,17 @@
+@import (reference) "../references";
+
+@font-face {
+  font-family: "roboto-mono-regular";
+
+  // prettier-ignore
+  src: url("@{font-base-path}/roboto-mono-regular/roboto-mono-regular.woff2") format("woff2"),
+       url("@{font-base-path}/roboto-mono-regular/roboto-mono-regular.woff") format("woff"),
+       url("@{font-base-path}/roboto-mono-regular/roboto-mono-regular.ttf") format("truetype");
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-roboto-mono-regular() {
+  font-family: "roboto-mono-regular", sans-serif;
+}

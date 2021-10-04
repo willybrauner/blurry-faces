@@ -1,0 +1,29 @@
+@import (reference) "../../references.less";
+
+.root {
+}
+
+.wrapper {
+  position: relative;
+  .R(width, 310, 600);
+}
+
+.title {
+  text-align: center;
+  .font-sacramento-regular();
+  .R(font-size, 60, 100);
+}
+
+.subtitlePart {
+  position: absolute;
+  .R(bottom, -2);
+  .R(font-size, 10,18);
+
+  &:nth-child(1) {
+    left: 0;
+    .R(left, 42, 92);
+  }
+  &:nth-child(2) {
+    .R(right, 68, 145);
+  }
+}

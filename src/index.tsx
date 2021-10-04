@@ -4,6 +4,7 @@ import * as React from "react"
 import App from "./components/app/App"
 import { createContext } from "react"
 import { TBlurZone } from "./components/blurZone/BlurZone"
+import { DICO } from "./data/dico"
 
 /**
  * Create Global App context

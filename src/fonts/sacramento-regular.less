@@ -1,0 +1,17 @@
+@import (reference) "../references";
+
+@font-face {
+  font-family: "sacramento-regular";
+
+  // prettier-ignore
+  src: url("@{font-base-path}/sacramento-regular/sacramento-regular.woff2") format("woff2"),
+       url("@{font-base-path}/sacramento-regular/sacramento-regular.woff") format("woff"),
+       url("@{font-base-path}/sacramento-regular/sacramento-regular.ttf") format("truetype");
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-sacramento-regular() {
+  font-family: "sacramento-regular", sans-serif;
+}
