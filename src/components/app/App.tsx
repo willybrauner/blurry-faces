@@ -1,5 +1,5 @@
 import css from "./App.module.less"
-import React, { useState } from "react"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import BlurryFacesGallery from "../blurryFacesGallery/BlurryFacesGallery"
 import InputImages from "../inputImages/InputImages"
 import { AppContext, IImageData } from "../../index"
@@ -10,11 +10,15 @@ import Loader from "../loader/Loader"
 import Logo from "../logo/Logo"
 import Polaroid from "../polaroid/Polaroid"
 import { merge } from "../../lib/utils/arrayUtils"
+import { gsap } from "gsap"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
+  const polaroidRef = useRef([])
+
+  // -------------------------------------------------------------------------------------
   const [images, setImages] = useState<IImageData[]>([])
   // loader
   const [isWatingSources, setIsWaitingSources] = useState<boolean>(false)
@@ -48,7 +52,6 @@ function App() {
    */
   const createZipFiles = async (): Promise<void> => {
     setIsWaitingSources(true)
-
     const zip = new JSZip()
     const img = zip.folder("blurry-images")
 
@@ -60,11 +63,9 @@ function App() {
         image.$img,
         image.fullBlurZones
       )
-
       // create file for zip
       img.file(image.filename, source, { base64: true })
     }
-
     // generate zip
     zip
       .generateAsync({
@@ -76,6 +77,48 @@ function App() {
         saveAs(content, "blurry-images.zip")
       })
   }
+
+  // ------------------------------------------------------------------------------------- ANIM
+
+  const polaroidsAnim = (els = polaroidRef.current): void => {
+    const tl = gsap.timeline({
+      defaults: { autoAlpha: 0, duration: 2, ease: "elastic.out(1, 0.3)" },
+    })
+    // left
+    tl.from(
+      els[2],
+      {
+        x: -innerWidth * 1.5,
+        rotate: 40,
+      },
+      "start"
+    )
+    // right
+    tl.from(
+      els[1],
+      {
+        x: innerWidth * 1.5,
+        rotate: 100,
+      },
+      "start-=0.1"
+    )
+
+    // center
+    tl.from(
+      els[0],
+      {
+        x: innerWidth * 1.5,
+        rotate: 70,
+      },
+      "start-=0.1"
+    )
+  }
+
+  useLayoutEffect(() => {
+    polaroidsAnim()
+  }, [])
+
+  // ------------------------------------------------------------------------------------- RENDER
 
   return (
     <AppContext.Provider
@@ -96,6 +139,7 @@ function App() {
           <div className={css.polaroids}>
             {["center", "right", "left"].map((el, i) => (
               <Polaroid
+                ref={(r) => (polaroidRef.current[i] = r)}
                 className={merge([css.polaroid, css[`polaroid_${el}`]])}
                 key={i}
               />

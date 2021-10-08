@@ -19,7 +19,11 @@
 
 .polaroids {
   display: block;
-  background-color: #b5b5b5;
+  transform: scale(0.66);
+  transform-origin: center center;
+  @media (min-width: @breakpoint-tablet) {
+    transform: none;
+  }
 }
 .polaroid {
   position: absolute;

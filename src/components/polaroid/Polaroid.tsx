@@ -1,5 +1,5 @@
 import css from "./Polaroid.module.less"
-import React from "react"
+import React, { forwardRef, MutableRefObject } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 
 interface IProps {
@@ -12,9 +12,9 @@ const debug = require("debug")(`front:${componentName}`)
 /**
  * @name Polaroid
  */
-function Polaroid(props: IProps) {
+const Polaroid = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
   return (
-    <div className={merge([css.root, props.className])}>
+    <div className={merge([css.root, props.className])} ref={ref}>
       <div className={css.wrapper}>
         <div className={css.card}>
           <div className={css.pic} />
@@ -23,6 +23,6 @@ function Polaroid(props: IProps) {
       </div>
     </div>
   )
-}
+})
 
 export default Polaroid
