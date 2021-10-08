@@ -13,19 +13,12 @@ import { merge } from "../../lib/utils/arrayUtils"
 import { gsap } from "gsap"
 import Github from "../github/Github"
 import { DICO } from "../../data/dico"
+import Home from "../home/Home"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
-  const logoRef = useRef(null)
-  const polaroidRef = useRef([])
-  const inputImagesRef = useRef(null)
-  const lineRef = useRef(null)
-  const donateLinkRef = useRef(null)
-  const creditLinkRef = useRef(null)
-  const githubLinkRef = useRef(null)
-
   // -------------------------------------------------------------------------------------
   const [images, setImages] = useState<IImageData[]>([])
   // loader
@@ -86,112 +79,6 @@ function App() {
       })
   }
 
-  // ------------------------------------------------------------------------------------- ANIM
-
-  const enterAnim = (
-    $logo = logoRef.current,
-    $polaroids = polaroidRef.current,
-    $inputImages = inputImagesRef.current,
-    $line = lineRef.current,
-    $gitubLink = githubLinkRef.current,
-    $donateLink = donateLinkRef.current,
-    $creditLink = creditLinkRef.current
-  ): void => {
-    const tl = gsap.timeline({
-      defaults: { autoAlpha: 1, duration: 1.3, ease: "elastic.out(1, 0.6)" },
-    })
-
-    // left
-    tl.from(
-      $logo,
-      {
-        y: -100,
-        autoAlpha: 0,
-      },
-      "start"
-    )
-    // left
-    tl.from(
-      $line,
-      {
-        autoAlpha: 1,
-        width: 0,
-        duration: 0.3,
-        ease: " circle.in",
-      },
-      "start+=0.1"
-    )
-    tl.set($line, { clearProps: "width" })
-
-    tl.addLabel("polaroid", "=-.6")
-    // left
-    tl.from(
-      $polaroids[2],
-      {
-        x: -innerWidth * 1.5,
-        rotate: 40,
-      },
-      "polaroid"
-    )
-    // right
-    tl.from(
-      $polaroids[1],
-      {
-        x: innerWidth * 1.5,
-        rotate: 100,
-      },
-      "polaroid+=.1"
-    )
-    // center
-    tl.from(
-      $polaroids[0],
-      {
-        x: innerWidth * 1.5,
-        rotate: 70,
-      },
-      "polaroid+=.2"
-    )
-
-    // button
-    tl.from(
-      $inputImages,
-      {
-        y: 200,
-        duration: 1,
-        transformOrigin: "center",
-        autoAlpha: 0,
-        stagger: 0.1,
-      },
-      "polaroid+=0.3"
-    )
-    tl.addLabel("ui", "polaroid+=0.5")
-    tl.from(
-      [$donateLink, $creditLink],
-      {
-        y: 100,
-        duration: 1,
-        transformOrigin: "center",
-        autoAlpha: 0,
-        stagger: 0.1,
-      },
-      "ui"
-    )
-    tl.from(
-      $gitubLink,
-      {
-        y: -100,
-        duration: 1,
-        transformOrigin: "center",
-        autoAlpha: 0,
-      },
-      "ui+=.3"
-    )
-  }
-
-  useLayoutEffect(() => {
-    enterAnim()
-  }, [])
-
   // ------------------------------------------------------------------------------------- RENDER
 
   return (
@@ -206,45 +93,7 @@ function App() {
       }}
     >
       <div className={css.root}>
-        <header className={css.header}>
-          <Logo className={css.logo} ref={logoRef} />
-          <a
-            className={css.githubLink}
-            href={DICO.github_link}
-            target={"_blank"}
-            ref={githubLinkRef}
-          >
-            <Github className={css.github} />
-          </a>
-        </header>
-        <section className={css.content}>
-          <div className={css.line} ref={lineRef} />
-          <div className={css.polaroids}>
-            <div className={css.polaroidsInner}>
-              {["center", "right", "left"].map((el, i) => (
-                <Polaroid
-                  ref={(r) => (polaroidRef.current[i] = r)}
-                  className={merge([css.polaroid, css[`polaroid_${el}`]])}
-                  key={i}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {images?.length === 0 && (
-          <InputImages className={css.input} ref={inputImagesRef} />
-        )}
-
-        <footer className={css.footer}>
-          <a className={css.donateLink} href={DICO.donate_link} ref={donateLinkRef}>
-            <div className={css.donate}>{DICO.donate}</div>
-          </a>
-          <a className={css.creditLink} href={DICO.author_webiste} ref={creditLinkRef}>
-            <div className={css.credit}>{DICO.credits}</div>
-          </a>
-        </footer>
-
+        {images?.length === 0 && <Home className={css.home} />}
         {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
         {isWatingSources && <Loader />}
       </div>
