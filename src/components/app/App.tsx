@@ -16,6 +16,7 @@ const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
+  const logoRef = useRef(null)
   const polaroidRef = useRef([])
 
   // -------------------------------------------------------------------------------------
@@ -80,10 +81,21 @@ function App() {
 
   // ------------------------------------------------------------------------------------- ANIM
 
-  const polaroidsAnim = (els = polaroidRef.current): void => {
+  const enterAnim = (logo = logoRef.current, els = polaroidRef.current): void => {
     const tl = gsap.timeline({
-      defaults: { autoAlpha: 0, duration: 2, ease: "elastic.out(1, 0.3)" },
+      defaults: { autoAlpha: 1, duration: 2, ease: "elastic.out(1, 0.3)" },
     })
+    // left
+    tl.from(
+      logo,
+      {
+        y: -10,
+        autoAlpha: 0,
+        duration: 1.5,
+      },
+      "start"
+    )
+    tl.addLabel("polaroid", "=-1.2")
     // left
     tl.from(
       els[2],
@@ -91,7 +103,7 @@ function App() {
         x: -innerWidth * 1.5,
         rotate: 40,
       },
-      "start"
+      "polaroid"
     )
     // right
     tl.from(
@@ -100,7 +112,7 @@ function App() {
         x: innerWidth * 1.5,
         rotate: 100,
       },
-      "start-=0.1"
+      "polaroid+=.1"
     )
 
     // center
@@ -110,12 +122,12 @@ function App() {
         x: innerWidth * 1.5,
         rotate: 70,
       },
-      "start-=0.1"
+      "polaroid+=.2"
     )
   }
 
   useLayoutEffect(() => {
-    polaroidsAnim()
+    enterAnim()
   }, [])
 
   // ------------------------------------------------------------------------------------- RENDER
@@ -132,8 +144,8 @@ function App() {
       }}
     >
       <div className={css.root}>
-        <header>
-          <Logo className={css.logo} />
+        <header className={css.header}>
+          <Logo className={css.logo} ref={logoRef} />
         </header>
         <section className={css.content}>
           <div className={css.polaroids}>
