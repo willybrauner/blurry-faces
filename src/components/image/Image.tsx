@@ -1,4 +1,4 @@
-import css from "./BlurryFacesImage.module.less"
+import css from "./Image.module.less"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
@@ -6,26 +6,25 @@ import * as faceapi from "face-api.js"
 import { TBlurZone } from "../blurZone/BlurZone"
 import { AppContext } from "../../index"
 import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
-import { div2Canvas } from "../../helpers/helpers"
 
 interface IProps {
   className?: string
   imageUrl: string
 }
 
-const componentName = "BluryFacesImage"
+const componentName = "Image"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
- * @name BlurryFacesImage
+ * @name Image
  *
  * - Add loader durring face detection
  * - Blur zone on canvas
  * - select zone manualy on canvas
  * + generate new image
  */
-function BlurryFacesImage(props: IProps) {
-  const { images, saveImages, saveImageSource } = useContext(AppContext)
+function Image(props: IProps) {
+  const { images, saveImages } = useContext(AppContext)
 
   const rootRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef(null)
@@ -194,4 +193,4 @@ function BlurryFacesImage(props: IProps) {
   )
 }
 
-export default BlurryFacesImage
+export default Image

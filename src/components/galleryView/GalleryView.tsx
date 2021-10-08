@@ -1,7 +1,7 @@
 import css from "./GalleryView.module.less"
 import React, { useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
-import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
+import Image from "../image/Image"
 import { AppContext } from "../../index"
 
 interface IProps {
@@ -39,7 +39,7 @@ function GalleryView(props: IProps) {
         <ul className={css.list}>
           {images?.map((el, i) => (
             <li className={css.item} key={i}>
-              <BlurryFacesImage className={css.image} imageUrl={el.url} />
+              <Image className={css.image} imageUrl={el.url} />
             </li>
           ))}
         </ul>
