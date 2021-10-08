@@ -2,7 +2,7 @@ import css from "./InputImages.module.less"
 import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
-import MainButton, { EMainButtonColor, EMainButtonSize } from "../mainButton/MainButton"
+import MainButton from "../mainButton/MainButton"
 
 interface IProps {
   className?: string
@@ -42,8 +42,6 @@ const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
       <MainButton
         label={"Upload your images"}
         className={css.mainButton}
-        size={EMainButtonSize.BIG}
-        color={EMainButtonColor.RED}
         onClick={() => inputRef.current.click()}
       />
 

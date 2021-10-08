@@ -1,8 +1,8 @@
 @import (reference) "../../references.less";
 
 @ratio: 1.4;
-
 .root {
+  .disableSelection();
 }
 
 .wrapper {
@@ -16,83 +16,36 @@
 }
 
 .container {
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  .R(border-radius, 80);
-  cursor: pointer;
 
-  &_right {
-    flex-direction: row-reverse;
-  }
+  .R(border-radius, 60);
+  background-color: @color-white;
 
-  &_big {
-    .R(height, 35 * @ratio, 40 * @ratio);
-    .R(padding-left, 16 * @ratio, 23 * @ratio);
-    .R(padding-right, 16 * @ratio, 23 * @ratio);
-  }
-
-  &_small {
-    .R(height, 32 * @ratio);
-    .R(padding-left, 15 * @ratio);
-    .R(padding-right, 15 * @ratio);
-  }
-
-  &_yellow {
-    background-color: @color-white;
-    border: 1px solid @color-yellow;
-  }
-
-  &_red {
-    background-color: @color-white;
-    border: 1px solid @color-red;
-  }
-
-  &_white {
-    border: 1px solid @color-red;
-  }
+  .R(height, 35 * @ratio, 40 * @ratio);
+  .R(padding-left, 16 * @ratio, 23 * @ratio);
+  .R(padding-right, 16 * @ratio, 23 * @ratio);
+  .R(padding-top, 16 * @ratio, 23 * @ratio);
+  .R(padding-bottom, 16 * @ratio, 23 * @ratio);
 }
 
 .container_rollover.container {
   z-index: 1;
   position: absolute;
   left: 0;
-
   transition: clip-path 0.5s ease;
   clip-path: polygon(-10% 0, 100% 0, 100% 100%, -40% 100%);
-
-  &_yellow {
-    background-color: @color-yellow;
-  }
-
-  &_red {
-    background-color: @color-red;
-  }
+  background-color: @color-red;
 
   .label {
-    &_red {
-      color: @color-white;
-    }
-
-    &_white,
-    &_yellow {
-      color: @color-red;
-    }
+    color: @color-white;
   }
 }
 
 .label {
-  .R(font-size, 14 * @ratio, 16 * @ratio);
-
-  &_red {
-    color: @color-red;
-  }
-
-  &_white {
-    color: @color-white;
-  }
-
-  &_yellow {
-    color: @color-red;
-  }
+  .R(font-size, 13 * @ratio, 15 * @ratio);
+  color: @color-red;
 }

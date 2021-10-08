@@ -114,6 +114,7 @@ function Home(props: IProps) {
         transformOrigin: "center",
         autoAlpha: 0,
         stagger: 0.1,
+        clearProps: "transform",
       },
       "ui"
     )
@@ -124,6 +125,7 @@ function Home(props: IProps) {
         duration: 1,
         transformOrigin: "center",
         autoAlpha: 0,
+        clearProps: "transform",
       },
       "ui+=.3"
     )
