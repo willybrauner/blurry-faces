@@ -4,7 +4,13 @@ import * as React from "react"
 import App from "./components/app/App"
 import { createContext } from "react"
 import { TBlurZone } from "./components/blurZone/BlurZone"
-import { DICO } from "./data/dico"
+import VhHelper from "./lib/utils/VhHelper"
+
+/**
+ * Utils
+ */
+
+new VhHelper()
 
 /**
  * Create Global App context

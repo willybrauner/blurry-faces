@@ -1,5 +1,5 @@
 import css from "./App.module.less"
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { useLayoutEffect, useRef, useState } from "react"
 import BlurryFacesGallery from "../blurryFacesGallery/BlurryFacesGallery"
 import InputImages from "../inputImages/InputImages"
 import { AppContext, IImageData } from "../../index"
@@ -18,6 +18,8 @@ const debug = require("debug")(`front:${componentName}`)
 function App() {
   const logoRef = useRef(null)
   const polaroidRef = useRef([])
+  const inputImagesRef = useRef(null)
+  const lineRef = useRef(null)
 
   // -------------------------------------------------------------------------------------
   const [images, setImages] = useState<IImageData[]>([])
@@ -81,24 +83,42 @@ function App() {
 
   // ------------------------------------------------------------------------------------- ANIM
 
-  const enterAnim = (logo = logoRef.current, els = polaroidRef.current): void => {
+  const enterAnim = (
+    $logo = logoRef.current,
+    $polaroids = polaroidRef.current,
+    $inputImages = inputImagesRef.current,
+    $line = lineRef.current
+  ): void => {
     const tl = gsap.timeline({
-      defaults: { autoAlpha: 1, duration: 2, ease: "elastic.out(1, 0.3)" },
+      defaults: { autoAlpha: 1, duration: 1.3, ease: "elastic.out(1, 0.6)" },
     })
+
     // left
     tl.from(
-      logo,
+      $logo,
       {
-        y: -10,
+        y: -100,
         autoAlpha: 0,
-        duration: 1.5,
+        //      duration: 1.5,
+        //        ease: "elastic.out(1, 1)",
       },
       "start"
     )
-    tl.addLabel("polaroid", "=-1.2")
     // left
     tl.from(
-      els[2],
+      $line,
+      {
+        autoAlpha: 1,
+        width: 0,
+        duration: 0.3,
+        ease: " circle.in",
+      },
+      "start+=0.1"
+    )
+    tl.addLabel("polaroid", "=-.6")
+    // left
+    tl.from(
+      $polaroids[2],
       {
         x: -innerWidth * 1.5,
         rotate: 40,
@@ -107,22 +127,35 @@ function App() {
     )
     // right
     tl.from(
-      els[1],
+      $polaroids[1],
       {
         x: innerWidth * 1.5,
         rotate: 100,
       },
       "polaroid+=.1"
     )
-
     // center
     tl.from(
-      els[0],
+      $polaroids[0],
       {
         x: innerWidth * 1.5,
         rotate: 70,
       },
       "polaroid+=.2"
+    )
+
+    // button
+    tl.from(
+      $inputImages,
+      {
+        y: 200,
+        //        ease: "back.inOut",
+        duration: 1,
+        //        rotate: 100,
+        transformOrigin: "center",
+        autoAlpha: 0,
+      },
+      "polaroid+=0.3"
     )
   }
 
@@ -148,6 +181,7 @@ function App() {
           <Logo className={css.logo} ref={logoRef} />
         </header>
         <section className={css.content}>
+          <div className={css.line} ref={lineRef} />
           <div className={css.polaroids}>
             {["center", "right", "left"].map((el, i) => (
               <Polaroid
@@ -157,10 +191,11 @@ function App() {
               />
             ))}
           </div>
-
-          {/*{images?.length === 0 && <InputImages className={css.input} />}*/}
-          {/*{images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}*/}
         </section>
+        {images?.length === 0 && (
+          <InputImages className={css.input} ref={inputImagesRef} />
+        )}
+        {/*{images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}*/}
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>

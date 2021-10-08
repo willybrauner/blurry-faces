@@ -1,5 +1,5 @@
 import css from "./InputImages.module.less"
-import React, { useContext, useRef } from "react"
+import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
 import MainButton, { EMainButtonColor, EMainButtonSize } from "../mainButton/MainButton"
@@ -14,7 +14,7 @@ const debug = require("debug")(`front:${componentName}`)
 /**
  * @name InputImages
  */
-function InputImages(props: IProps) {
+const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
   const { saveImages } = useContext(AppContext)
   const inputRef = useRef(null)
 
@@ -38,7 +38,7 @@ function InputImages(props: IProps) {
   }
 
   return (
-    <div className={merge([css.root, props.className])}>
+    <div className={merge([css.root, props.className])} ref={ref}>
       <MainButton
         label={"Upload your images"}
         className={css.mainButton}
@@ -57,6 +57,6 @@ function InputImages(props: IProps) {
       />
     </div>
   )
-}
+})
 
 export default InputImages

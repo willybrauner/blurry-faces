@@ -14,6 +14,14 @@
   .R(margin-top, 50);
 }
 
+.line {
+  background-color: @color-blue-2;
+  width: 100vw;
+  .R(height,75,  100);
+  .absoluteCenter();
+  .R(margin-top, 0);
+}
+
 .polaroids {
   display: block;
   transform: scale(0.66);
@@ -44,7 +52,9 @@
 }
 
 .input {
-  .absoluteCenter();
+  .absoluteCenter(x);
+  top: auto;
+  .R(bottom, 50, 75);
 }
 
 .gallery {
