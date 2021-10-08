@@ -1,23 +1,29 @@
-import { useEffect, useLayoutEffect, useState } from "react"
-import ViewManager from "../manager/ViewManager"
+import { useLayoutEffect, useState } from "react"
+import ViewManager, { TPlayState } from "../manager/ViewManager"
 
 const componentName = "useMountView"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
  *
- * @param viewInstance
+ * @param view
  */
-export const useMountView = (viewInstance: ViewManager): boolean => {
+export const useMountView = (view: ViewManager): boolean => {
   const [mount, setMount] = useState<boolean>(false)
 
-  useLayoutEffect(() => {
-    const handleMountState = (mount) => {
-      debug("mount args?", mount)
-      setMount(mount)
-      mount ? viewInstance.mountComplete() : viewInstance.unmountComplete()
+  const handlePlayState = (playState: TPlayState): void => {
+    if (playState === "mount") {
+      setMount(true)
+      view.mountComplete()
     }
-    return viewInstance.playStateSignal.on(handleMountState)
+    if (playState === "unmount") {
+      setMount(false)
+      view.unmountComplete()
+    }
+  }
+
+  useLayoutEffect(() => {
+    return view.playStateSignal.on(handlePlayState)
   }, [])
 
   return mount

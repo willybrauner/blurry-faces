@@ -40,8 +40,8 @@ export default class ViewManager {
 
   private unmountDeferred: TDeferredPromise<void>
 
-  public unmount<GArgs = any>(args: GArgs): Promise<void> {
-    this.log(this.name, "mount")
+  public unmount<GArgs = any>(args?: GArgs): Promise<void> {
+    this.log(this.name, "unmount")
     this.unmountDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("unmount", args)
     return this.unmountDeferred.promise
@@ -68,18 +68,11 @@ export default class ViewManager {
     this.mountDeferred?.resolve()
   }
 
-  // ------------------------------------------------------------------------------------- HIDE
-
-  public hide(): void {
-    this.log(this.name, "hide")
-    this.playStateSignal.dispatch("hidden")
-  }
-
   // ------------------------------------------------------------------------------------- PLAYOUT
 
   private playOutDeferred: TDeferredPromise<void>
 
-  public playOut<GArgs = any>(args: GArgs): Promise<void> {
+  public playOut<GArgs = any>(args?: GArgs): Promise<void> {
     this.log(this.name, "playOut")
     this.playOutDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-out", args)
@@ -96,7 +89,7 @@ export default class ViewManager {
 
   private playInDeferred: TDeferredPromise<void>
 
-  public playIn<GArgs = any>(args: GArgs): Promise<void> {
+  public playIn<GArgs = any>(args?: GArgs): Promise<void> {
     this.log(this.name, "playIn")
     this.playInDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-in", args)
@@ -109,13 +102,6 @@ export default class ViewManager {
     this.playInDeferred?.resolve()
   }
 
-  // ------------------------------------------------------------------------------------- SHOW
-
-  public show(): void {
-    this.log(this.name, "show")
-    this.playStateSignal.dispatch("visible")
-  }
-
   // ------------------------------------------------------------------------------------- HELPER
 
   /**
@@ -124,6 +110,6 @@ export default class ViewManager {
    * @private
    */
   private log(...rest) {
-    this.enableDebug && debug(rest)
+    this.enableDebug && debug(...rest)
   }
 }

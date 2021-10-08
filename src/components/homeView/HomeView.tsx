@@ -7,6 +7,9 @@ import Github from "../github/Github"
 import Polaroid from "../polaroid/Polaroid"
 import InputImages from "../inputImages/InputImages"
 import { gsap } from "gsap"
+import HomeViewService from "./HomeViewService"
+import { TPlayState } from "../../manager/ViewManager"
+import { useView } from "../../helpers/useView"
 
 interface IProps {
   className?: string
@@ -29,7 +32,9 @@ function HomeView(props: IProps) {
 
   // ------------------------------------------------------------------------------------- ANIM
 
-  const enterAnim = (
+  const tl = useRef<gsap.core.Timeline>(null)
+
+  const initTl = (
     $logo = logoRef.current,
     $polaroids = polaroidRef.current,
     $inputImages = inputImagesRef.current,
@@ -37,13 +42,18 @@ function HomeView(props: IProps) {
     $gitubLink = githubLinkRef.current,
     $donateLink = donateLinkRef.current,
     $creditLink = creditLinkRef.current
-  ): void => {
-    const tl = gsap.timeline({
-      defaults: { autoAlpha: 1, duration: 1.6, ease: "elastic.out(1, 0.6)" },
+  ): gsap.core.Timeline => {
+    const current = gsap.timeline({
+      paused: true,
+      defaults: {
+        autoAlpha: 1,
+        duration: 1.6,
+        ease: "elastic.out(1, 0.6)",
+      },
     })
 
     // left
-    tl.from(
+    current.from(
       $logo,
       {
         y: -300,
@@ -52,7 +62,7 @@ function HomeView(props: IProps) {
       "start"
     )
     // left
-    tl.from(
+    current.from(
       $line,
       {
         autoAlpha: 1,
@@ -62,11 +72,11 @@ function HomeView(props: IProps) {
       },
       "start+=0.3"
     )
-    tl.set($line, { clearProps: "width" })
+    current.set($line, { clearProps: "width" })
 
-    tl.addLabel("polaroid", "start+=1")
+    current.addLabel("polaroid", "start+=1")
     // left
-    tl.from(
+    current.from(
       $polaroids[2],
       {
         x: -innerWidth * 1.5,
@@ -75,7 +85,7 @@ function HomeView(props: IProps) {
       "polaroid"
     )
     // right
-    tl.from(
+    current.from(
       $polaroids[1],
       {
         x: innerWidth * 1.5,
@@ -84,7 +94,7 @@ function HomeView(props: IProps) {
       "polaroid+=.1"
     )
     // center
-    tl.from(
+    current.from(
       $polaroids[0],
       {
         x: innerWidth * 1.5,
@@ -94,7 +104,7 @@ function HomeView(props: IProps) {
     )
 
     // button
-    tl.from(
+    current.from(
       $inputImages,
       {
         y: 200,
@@ -105,8 +115,8 @@ function HomeView(props: IProps) {
       },
       "polaroid+=0.3"
     )
-    tl.addLabel("ui", "polaroid+=0.5")
-    tl.from(
+    current.addLabel("ui", "polaroid+=0.5")
+    current.from(
       [$donateLink, $creditLink],
       {
         y: 100,
@@ -118,7 +128,7 @@ function HomeView(props: IProps) {
       },
       "ui"
     )
-    tl.from(
+    current.from(
       $gitubLink,
       {
         y: -100,
@@ -129,11 +139,22 @@ function HomeView(props: IProps) {
       },
       "ui+=.3"
     )
+
+    return current
   }
 
   useLayoutEffect(() => {
-    enterAnim()
+    tl.current = initTl()
   }, [])
+
+  const playIn = () => tl.current.play()
+  const playOut = () => tl.current.reverse()
+
+  const { playState } = useView({
+    view: HomeViewService,
+    playIn,
+    playOut,
+  })
 
   // -------------------------–-------------------------–--------------------------------- RENDER
 

@@ -1,5 +1,5 @@
 import css from "./App.module.less"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import GalleryView from "../galleryView/GalleryView"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
@@ -9,6 +9,8 @@ import Loader from "../loader/Loader"
 import HomeView from "../homeView/HomeView"
 import { useMountView } from "../../helpers/useMountView"
 import HomeViewService from "../homeView/HomeViewService"
+import GalleryViewService from "../galleryView/GalleryViewService"
+import { useView } from "../../helpers/useView"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -74,12 +76,28 @@ function App() {
 
   // ------------------------------------------------------------------------------------- VIEWS
 
-  const homeViewMount = useMountView(HomeViewService)
-  debug("homeViewMount", homeViewMount)
+  const { mount: mountHomeView } = useView({ view: HomeViewService })
+  const { mount: galleryViewHome } = useView({ view: GalleryViewService })
 
-  useEffect(() => {
-    HomeViewService.mount()
-  })
+  /**
+   * show home
+   */
+  useLayoutEffect(() => {
+    const thread = async () => {
+      if (images?.length === 0) {
+        await HomeViewService.mount()
+        await HomeViewService.playIn()
+      } else {
+        await HomeViewService.playOut()
+        await HomeViewService.unmount()
+
+        await GalleryViewService.mount()
+        await GalleryViewService.playIn()
+      }
+    }
+
+    thread()
+  }, [images])
 
   // ------------------------------------------------------------------------------------- RENDER
 
@@ -95,8 +113,8 @@ function App() {
   return (
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
-        {images?.length === 0 && <HomeView className={css.home} />}
-        {images?.length > 0 && <GalleryView className={css.gallery} />}
+        {mountHomeView && <HomeView className={css.home} />}
+        {galleryViewHome && <GalleryView className={css.gallery} />}
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>

@@ -1,8 +1,11 @@
 import css from "./GalleryView.module.less"
-import React, { useContext } from "react"
+import React, { useContext, useLayoutEffect, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import Image from "../image/Image"
 import { AppContext } from "../../index"
+import { gsap } from "gsap"
+import { useView } from "../../helpers/useView"
+import GalleryViewService from "./GalleryViewService"
 
 interface IProps {
   className?: string
@@ -15,9 +18,42 @@ const debug = require("debug")(`front:${componentName}`)
  * @name GalleryView
  */
 function GalleryView(props: IProps) {
+  const rootRef = useRef(null)
   const { images, resetImages, createZipFiles } = useContext(AppContext)
+
+  /**
+   *
+   */
+
+  // --------------------------------------------------------------------------------------- VIEW
+
+  const tl = useRef<gsap.core.Timeline>(null)
+
+  const initTl = (): gsap.core.Timeline => {
+    const current = gsap.timeline({ paused: true })
+    current.from(rootRef.current, {
+      autoAlpha: 0,
+    })
+    return current
+  }
+
+  useLayoutEffect(() => {
+    tl.current = initTl()
+  }, [])
+
+  const playIn = () => tl.current.play()
+  const playOut = () => tl.current.reverse()
+
+  const { playState } = useView({
+    view: GalleryViewService,
+    playIn,
+    playOut,
+  })
+
+  // --------------------------------------------------------------------------------------- RENDER
+
   return (
-    <div className={merge([css.root, props.className])}>
+    <div className={merge([css.root, props.className])} ref={rootRef}>
       <header className={css.header}>
         <button
           className={css.mainButton}
