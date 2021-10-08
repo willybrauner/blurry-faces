@@ -1,12 +1,12 @@
 import css from "./App.module.less"
 import React, { useState } from "react"
-import BlurryFacesGallery from "../blurryFacesGallery/BlurryFacesGallery"
+import GalleryView from "../galleryView/GalleryView"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
-import Home from "../home/Home"
+import HomeView from "../homeView/HomeView"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -84,8 +84,8 @@ function App() {
   return (
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
-        {images?.length === 0 && <Home className={css.home} />}
-        {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
+        {images?.length === 0 && <HomeView className={css.home} />}
+        {images?.length > 0 && <GalleryView className={css.gallery} />}
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>

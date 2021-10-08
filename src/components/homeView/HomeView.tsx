@@ -1,4 +1,4 @@
-import css from "./Home.module.less"
+import css from "./HomeView.module.less"
 import React, { useLayoutEffect, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import Logo from "../logo/Logo"
@@ -12,13 +12,13 @@ interface IProps {
   className?: string
 }
 
-const componentName = "Home"
+const componentName = "HomeView"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
- * @name Home
+ * @name HomeView
  */
-function Home(props: IProps) {
+function HomeView(props: IProps) {
   const logoRef = useRef(null)
   const polaroidRef = useRef([])
   const inputImagesRef = useRef(null)
@@ -189,4 +189,4 @@ function Home(props: IProps) {
   )
 }
 
-export default Home
+export default HomeView

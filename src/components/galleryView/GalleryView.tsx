@@ -1,4 +1,4 @@
-import css from "./BlurryFacesGallery.module.less"
+import css from "./GalleryView.module.less"
 import React, { useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurryFacesImage from "../blurryFacesImage/BlurryFacesImage"
@@ -8,13 +8,13 @@ interface IProps {
   className?: string
 }
 
-const componentName = "BlurryFacesGallery"
+const componentName = "GalleryView"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
- * @name BlurryFacesGallery
+ * @name GalleryView
  */
-function BlurryFacesGallery(props: IProps) {
+function GalleryView(props: IProps) {
   const { images, resetImages, createZipFiles } = useContext(AppContext)
   return (
     <div className={merge([css.root, props.className])}>
@@ -48,4 +48,4 @@ function BlurryFacesGallery(props: IProps) {
   )
 }
 
-export default BlurryFacesGallery
+export default GalleryView
