@@ -1,27 +1,18 @@
 import css from "./App.module.less"
-import React, { useLayoutEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import BlurryFacesGallery from "../blurryFacesGallery/BlurryFacesGallery"
-import InputImages from "../inputImages/InputImages"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
-import Logo from "../logo/Logo"
-import Polaroid from "../polaroid/Polaroid"
-import { merge } from "../../lib/utils/arrayUtils"
-import { gsap } from "gsap"
-import Github from "../github/Github"
-import { DICO } from "../../data/dico"
 import Home from "../home/Home"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
-  // -------------------------------------------------------------------------------------
   const [images, setImages] = useState<IImageData[]>([])
-  // loader
   const [isWatingSources, setIsWaitingSources] = useState<boolean>(false)
 
   /**
@@ -79,19 +70,19 @@ function App() {
       })
   }
 
+  const providerValue = {
+    images,
+    saveImages,
+    saveImageSource,
+    createZipFiles,
+    resetImages,
+    isWatingSources,
+  }
+
   // ------------------------------------------------------------------------------------- RENDER
 
   return (
-    <AppContext.Provider
-      value={{
-        images,
-        saveImages,
-        saveImageSource,
-        createZipFiles,
-        resetImages,
-        isWatingSources,
-      }}
-    >
+    <AppContext.Provider value={providerValue}>
       <div className={css.root}>
         {images?.length === 0 && <Home className={css.home} />}
         {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
