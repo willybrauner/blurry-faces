@@ -4,12 +4,23 @@ import { deferredPromise, TDeferredPromise } from "@wbe/deferred-promise"
 const componentName = "ViewManager"
 const debug = require("debug")(`front:${componentName}`)
 
-export type TPlayState = "hidden" | "play-out" | "play-in" | "visible"
+export type TPlayState =
+  | "unmount"
+  | "mount"
+  | "hidden"
+  | "play-out"
+  | "play-in"
+  | "visible"
 
 /**
  * View Manager extended class
  */
-class ViewManager {
+export default class ViewManager {
+  constructor(name: string | null = null, enableDebug: boolean = false) {
+    this.name = name
+    this.enableDebug = enableDebug
+  }
+
   /**
    * Current class name extend this ViewManager
    */
@@ -18,28 +29,50 @@ class ViewManager {
   /**
    * Enable "debug"
    */
-  public enableDebug = false
+  public enableDebug: boolean
 
   /**
    * ViewManager playState
    */
   public playStateSignal = Signal<[TPlayState, any?]>()
 
-  // ------------------------------------------------------------------------------------- PLAYIN
+  // ------------------------------------------------------------------------------------- UNMOUNT
 
-  private playInDeferred: TDeferredPromise<void>
+  private unmountDeferred: TDeferredPromise<void>
 
-  public playIn<GArgs = any>(args: GArgs): Promise<void> {
-    this.log(this.name, "playIn")
-    this.playInDeferred = deferredPromise<void>()
-    this.playStateSignal.dispatch("play-in", args)
-    return this.playInDeferred.promise
+  public unmount<GArgs = any>(args: GArgs): Promise<void> {
+    this.log(this.name, "mount")
+    this.unmountDeferred = deferredPromise<void>()
+    this.playStateSignal.dispatch("unmount", args)
+    return this.unmountDeferred.promise
   }
 
-  public playInComplete(): void {
-    this.log(this.name, "playIn complete")
-    this.playStateSignal.dispatch("visible")
-    this.playInDeferred?.resolve()
+  public unmountComplete(): void {
+    this.log(this.name, "unmount complete")
+    this.unmountDeferred?.resolve()
+  }
+
+  // ------------------------------------------------------------------------------------- MOUNT
+
+  private mountDeferred: TDeferredPromise<void>
+
+  public mount<GArgs = any>(args?: GArgs): Promise<void> {
+    this.log(this.name, "mount")
+    this.mountDeferred = deferredPromise<void>()
+    this.playStateSignal.dispatch("mount", args)
+    return this.mountDeferred.promise
+  }
+
+  public mountComplete(): void {
+    this.log(this.name, "mount complete")
+    this.mountDeferred?.resolve()
+  }
+
+  // ------------------------------------------------------------------------------------- HIDE
+
+  public hide(): void {
+    this.log(this.name, "hide")
+    this.playStateSignal.dispatch("hidden")
   }
 
   // ------------------------------------------------------------------------------------- PLAYOUT
@@ -59,6 +92,23 @@ class ViewManager {
     this.playOutDeferred?.resolve()
   }
 
+  // ------------------------------------------------------------------------------------- PLAYIN
+
+  private playInDeferred: TDeferredPromise<void>
+
+  public playIn<GArgs = any>(args: GArgs): Promise<void> {
+    this.log(this.name, "playIn")
+    this.playInDeferred = deferredPromise<void>()
+    this.playStateSignal.dispatch("play-in", args)
+    return this.playInDeferred.promise
+  }
+
+  public playInComplete(): void {
+    this.log(this.name, "playIn complete")
+    this.playStateSignal.dispatch("visible")
+    this.playInDeferred?.resolve()
+  }
+
   // ------------------------------------------------------------------------------------- SHOW
 
   public show(): void {
@@ -66,14 +116,7 @@ class ViewManager {
     this.playStateSignal.dispatch("visible")
   }
 
-  // ------------------------------------------------------------------------------------- HIDE
-
-  public hide(): void {
-    this.log(this.name, "hide")
-    this.playStateSignal.dispatch("hidden")
-  }
-
-  // -------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------- HELPER
 
   /**
    * Logs
@@ -84,5 +127,3 @@ class ViewManager {
     this.enableDebug && debug(rest)
   }
 }
-
-export default new ViewManager()

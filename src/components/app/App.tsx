@@ -1,5 +1,5 @@
 import css from "./App.module.less"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import GalleryView from "../galleryView/GalleryView"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
@@ -7,6 +7,8 @@ import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
 import HomeView from "../homeView/HomeView"
+import { useMountView } from "../../helpers/useMountView"
+import HomeViewService from "../homeView/HomeViewService"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -69,6 +71,15 @@ function App() {
         saveAs(content, "blurry-images.zip")
       })
   }
+
+  // ------------------------------------------------------------------------------------- VIEWS
+
+  const homeViewMount = useMountView(HomeViewService)
+  debug("homeViewMount", homeViewMount)
+
+  useEffect(() => {
+    HomeViewService.mount()
+  })
 
   // ------------------------------------------------------------------------------------- RENDER
 
