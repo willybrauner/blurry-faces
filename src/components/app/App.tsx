@@ -8,6 +8,8 @@ import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
 import Logo from "../logo/Logo"
+import Polaroid from "../polaroid/Polaroid"
+import { merge } from "../../lib/utils/arrayUtils"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -86,16 +88,25 @@ function App() {
         isWatingSources,
       }}
     >
-      <header>
-        <Logo className={css.logo} />
-      </header>
-
       <div className={css.root}>
-        {images?.length === 0 && <InputImages className={css.input} />}
-        {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
-      </div>
+        <header>
+          <Logo className={css.logo} />
+        </header>
+        <section className={css.content}>
+          <div className={css.polaroids}>
+            {["center", "right", "left"].map((el, i) => (
+              <Polaroid
+                className={merge([css.polaroid, css[`polaroid_${el}`]])}
+                key={i}
+              />
+            ))}
+          </div>
 
-      {isWatingSources && <Loader />}
+          {/*{images?.length === 0 && <InputImages className={css.input} />}*/}
+          {/*{images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}*/}
+        </section>
+        {isWatingSources && <Loader />}
+      </div>
     </AppContext.Provider>
   )
 }
