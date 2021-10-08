@@ -11,6 +11,8 @@ import Logo from "../logo/Logo"
 import Polaroid from "../polaroid/Polaroid"
 import { merge } from "../../lib/utils/arrayUtils"
 import { gsap } from "gsap"
+import Github from "../github/Github"
+import { DICO } from "../../data/dico"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -179,6 +181,9 @@ function App() {
       <div className={css.root}>
         <header className={css.header}>
           <Logo className={css.logo} ref={logoRef} />
+          <a className={css.githubLink} href={DICO.github_link} target={"_blank"}>
+            <Github className={css.github} />
+          </a>
         </header>
         <section className={css.content}>
           <div className={css.line} ref={lineRef} />
@@ -195,7 +200,19 @@ function App() {
         {images?.length === 0 && (
           <InputImages className={css.input} ref={inputImagesRef} />
         )}
-        {/*{images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}*/}
+
+        {images?.length > 0 && <BlurryFacesGallery className={css.gallery} />}
+
+        <footer className={css.footer}>
+          <a className={css.donateLink} href={DICO.donate_link}>
+            <div className={css.donate}>{DICO.donate}</div>
+          </a>
+
+          <a className={css.creditLink} href={DICO.author_webiste}>
+            <div className={css.credit}>{DICO.credits}</div>
+          </a>
+        </footer>
+
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>
