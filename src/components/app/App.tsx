@@ -70,6 +70,8 @@ function App() {
       })
   }
 
+  // ------------------------------------------------------------------------------------- RENDER
+
   const providerValue = {
     images,
     saveImages,
@@ -78,8 +80,6 @@ function App() {
     resetImages,
     isWatingSources,
   }
-
-  // ------------------------------------------------------------------------------------- RENDER
 
   return (
     <AppContext.Provider value={providerValue}>
