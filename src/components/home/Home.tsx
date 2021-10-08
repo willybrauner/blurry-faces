@@ -39,14 +39,14 @@ function Home(props: IProps) {
     $creditLink = creditLinkRef.current
   ): void => {
     const tl = gsap.timeline({
-      defaults: { autoAlpha: 1, duration: 1.3, ease: "elastic.out(1, 0.6)" },
+      defaults: { autoAlpha: 1, duration: 1.6, ease: "elastic.out(1, 0.6)" },
     })
 
     // left
     tl.from(
       $logo,
       {
-        y: -100,
+        y: -300,
         autoAlpha: 0,
       },
       "start"
@@ -60,11 +60,11 @@ function Home(props: IProps) {
         duration: 0.3,
         ease: " circle.in",
       },
-      "start+=0.1"
+      "start+=0.3"
     )
     tl.set($line, { clearProps: "width" })
 
-    tl.addLabel("polaroid", "=-.6")
+    tl.addLabel("polaroid", "start+=1")
     // left
     tl.from(
       $polaroids[2],
@@ -168,10 +168,20 @@ function Home(props: IProps) {
       <InputImages className={css.input} ref={inputImagesRef} />
 
       <footer className={css.footer}>
-        <a className={css.donateLink} href={DICO.donate_link} ref={donateLinkRef}>
+        <a
+          className={css.donateLink}
+          href={DICO.donate_link}
+          ref={donateLinkRef}
+          target={"_blank"}
+        >
           <div className={css.donate}>{DICO.donate}</div>
         </a>
-        <a className={css.creditLink} href={DICO.author_webiste} ref={creditLinkRef}>
+        <a
+          className={css.creditLink}
+          href={DICO.author_webiste}
+          ref={creditLinkRef}
+          target={"_blank"}
+        >
           <div className={css.credit}>{DICO.credits}</div>
         </a>
       </footer>
