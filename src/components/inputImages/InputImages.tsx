@@ -3,6 +3,7 @@ import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
 import MainButton from "../mainButton/MainButton"
+import AppService from "../app/AppService"
 
 interface IProps {
   className?: string
@@ -35,6 +36,7 @@ const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
       })
     }
     saveImages(arr)
+    AppService.goToGallery()
   }
 
   return (

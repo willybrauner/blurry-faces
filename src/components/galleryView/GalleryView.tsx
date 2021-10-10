@@ -21,11 +21,7 @@ function GalleryView(props: IProps) {
   const rootRef = useRef(null)
   const { images, resetImages, createZipFiles } = useContext(AppContext)
 
-  /**
-   *
-   */
-
-  // --------------------------------------------------------------------------------------- VIEW
+  // ------------------------------------------------------------------------------------- VIEW
 
   const tl = useRef<gsap.core.Timeline>(null)
 
@@ -44,13 +40,13 @@ function GalleryView(props: IProps) {
   const playIn = () => tl.current.play()
   const playOut = () => tl.current.reverse()
 
-  const { playState } = useView({
+  useView({
     view: GalleryViewService,
     playIn,
     playOut,
   })
 
-  // --------------------------------------------------------------------------------------- RENDER
+  // ------------------------------------------------------------------------------------- RENDER
 
   return (
     <div className={merge([css.root, props.className])} ref={rootRef}>

@@ -36,11 +36,18 @@ export default class ViewManager {
    */
   public playStateSignal = Signal<[TPlayState, any?]>()
 
+  /**
+   * Current play state
+   * @private
+   */
+  public currentPlayState: TPlayState = "unmount"
+
   // ------------------------------------------------------------------------------------- UNMOUNT
 
   private unmountDeferred: TDeferredPromise<void>
 
   public unmount<GArgs = any>(args?: GArgs): Promise<void> {
+    this.currentPlayState = "unmount"
     this.log(this.name, "unmount")
     this.unmountDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("unmount", args)
@@ -57,6 +64,7 @@ export default class ViewManager {
   private mountDeferred: TDeferredPromise<void>
 
   public mount<GArgs = any>(args?: GArgs): Promise<void> {
+    this.currentPlayState = "mount"
     this.log(this.name, "mount")
     this.mountDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("mount", args)
@@ -73,6 +81,7 @@ export default class ViewManager {
   private playOutDeferred: TDeferredPromise<void>
 
   public playOut<GArgs = any>(args?: GArgs): Promise<void> {
+    this.currentPlayState = "play-out"
     this.log(this.name, "playOut")
     this.playOutDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-out", args)
@@ -90,6 +99,7 @@ export default class ViewManager {
   private playInDeferred: TDeferredPromise<void>
 
   public playIn<GArgs = any>(args?: GArgs): Promise<void> {
+    this.currentPlayState = "play-in"
     this.log(this.name, "playIn")
     this.playInDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-in", args)

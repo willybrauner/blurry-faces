@@ -150,7 +150,7 @@ function HomeView(props: IProps) {
   const playIn = () => tl.current.play()
   const playOut = () => tl.current.reverse()
 
-  const { playState } = useView({
+  useView({
     view: HomeViewService,
     playIn,
     playOut,

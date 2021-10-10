@@ -17,31 +17,10 @@ export type TUseView = {
  * @param playIn
  * @param playOut
  */
-export const useView = ({
-  view,
-  playIn,
-  playOut,
-}: TUseView): {
-  playState: TPlayState
-  mount: boolean
-} => {
+export const useView = ({ view, playIn, playOut }: TUseView) => {
   const [playState, setPlayState] = useState<TPlayState>()
-  const [mount, setMount] = useState<boolean>(false)
 
   const handlePlayState = async (play: TPlayState, args?: any): Promise<void> => {
-    //setPlayState(play)
-    //    if (play === playState) return
-
-    if (play === "mount") {
-      view.mountComplete()
-      setMount(true)
-    }
-
-    if (play === "unmount") {
-      view.unmountComplete()
-      setMount(false)
-    }
-
     if (play === "play-in" && playIn) {
       await playIn?.(args)
       view.playInComplete()
@@ -56,6 +35,4 @@ export const useView = ({
   useLayoutEffect(() => {
     return view.playStateSignal.on(handlePlayState)
   }, [])
-
-  return { playState, mount }
 }

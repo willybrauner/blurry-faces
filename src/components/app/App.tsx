@@ -11,6 +11,7 @@ import { useMountView } from "../../helpers/useMountView"
 import HomeViewService from "../homeView/HomeViewService"
 import GalleryViewService from "../galleryView/GalleryViewService"
 import { useView } from "../../helpers/useView"
+import AppService from "./AppService"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -76,28 +77,15 @@ function App() {
 
   // ------------------------------------------------------------------------------------- VIEWS
 
-  const { mount: mountHomeView } = useView({ view: HomeViewService })
-  const { mount: galleryViewHome } = useView({ view: GalleryViewService })
+  const mountHomeView = useMountView(HomeViewService)
+  const mountGalleryView = useMountView(GalleryViewService)
 
   /**
    * show home
    */
   useLayoutEffect(() => {
-    const thread = async () => {
-      if (images?.length === 0) {
-        await HomeViewService.mount()
-        await HomeViewService.playIn()
-      } else {
-        await HomeViewService.playOut()
-        await HomeViewService.unmount()
-
-        await GalleryViewService.mount()
-        await GalleryViewService.playIn()
-      }
-    }
-
-    thread()
-  }, [images])
+    AppService.goToHome()
+  }, [])
 
   // ------------------------------------------------------------------------------------- RENDER
 
@@ -114,7 +102,7 @@ function App() {
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
         {mountHomeView && <HomeView className={css.home} />}
-        {galleryViewHome && <GalleryView className={css.gallery} />}
+        {mountGalleryView && <GalleryView className={css.gallery} />}
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>
