@@ -8,7 +8,6 @@ import Polaroid from "../polaroid/Polaroid"
 import InputImages from "../inputImages/InputImages"
 import { gsap } from "gsap"
 import HomeViewService from "./HomeViewService"
-import { TPlayState } from "../../manager/ViewManager"
 import { useView } from "../../helpers/useView"
 
 interface IProps {

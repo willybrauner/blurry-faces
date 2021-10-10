@@ -1,7 +1,7 @@
-import HomeViewService from "../homeView/HomeViewService"
-import GalleryViewService from "../galleryView/GalleryViewService"
+import HomeViewService from "../components/homeView/HomeViewService"
+import GalleryViewService from "../components/galleryView/GalleryViewService"
 
-class AppService {
+class Viewer {
   public async goToGallery(): Promise<void> {
     if (HomeViewService.currentPlayState !== "unmount") {
       await HomeViewService.playOut()
@@ -21,4 +21,4 @@ class AppService {
   }
 }
 
-export default new AppService()
+export default new Viewer()

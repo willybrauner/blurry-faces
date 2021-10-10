@@ -10,8 +10,7 @@ import HomeView from "../homeView/HomeView"
 import { useMountView } from "../../helpers/useMountView"
 import HomeViewService from "../homeView/HomeViewService"
 import GalleryViewService from "../galleryView/GalleryViewService"
-import { useView } from "../../helpers/useView"
-import AppService from "./AppService"
+import Viewer from "../../manager/Viewer"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -84,7 +83,7 @@ function App() {
    * show home
    */
   useLayoutEffect(() => {
-    AppService.goToHome()
+    Viewer.goToHome()
   }, [])
 
   // ------------------------------------------------------------------------------------- RENDER
