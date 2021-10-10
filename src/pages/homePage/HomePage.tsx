@@ -1,26 +1,24 @@
-import css from "./HomeView.module.less"
-import React, { useLayoutEffect, useRef } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
-import Logo from "../logo/Logo"
-import { DICO } from "../../data/dico"
-import Github from "../github/Github"
-import Polaroid from "../polaroid/Polaroid"
-import InputImages from "../inputImages/InputImages"
+import css from "./HomePage.module.less"
+import React, { forwardRef, ForwardedRef, useRef, useLayoutEffect } from "react"
+import { useStack } from "@cher-ami/router"
 import { gsap } from "gsap"
-import HomeViewService from "./HomeViewService"
-import { useView } from "../../helpers/useView"
+import Logo from "../../components/logo/Logo"
+import { DICO } from "../../data/dico"
+import Github from "../../components/github/Github"
+import Polaroid from "../../components/polaroid/Polaroid"
+import { merge } from "../../lib/utils/arrayUtils"
+import InputImages from "../../components/inputImages/InputImages"
 
-interface IProps {
-  className?: string
-}
+interface IProps {}
 
-const componentName = "HomeView"
+const componentName = "HomePage"
 const debug = require("debug")(`front:${componentName}`)
 
 /**
- * @name HomeView
+ * @name HomePage
  */
-function HomeView(props: IProps) {
+const HomePage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => {
+  const rootRef = useRef(null)
   const logoRef = useRef(null)
   const polaroidRef = useRef([])
   const inputImagesRef = useRef(null)
@@ -146,19 +144,27 @@ function HomeView(props: IProps) {
     tl.current = initTl()
   }, [])
 
-  const playIn = () => tl.current.play()
-  const playOut = () => tl.current.reverse()
+  /**
+   * playIn page transition
+   * (remove this example if not use)
+   */
+  const playIn = (): Promise<void> => tl.current.play() as any
 
-  useView({
-    view: HomeViewService,
-    playIn,
-    playOut,
-  })
+  /**
+   * playOut page transition
+   * (remove this example if not use)
+   */
+  const playOut = (): Promise<void> => tl.current.reverse() as any
 
-  // -------------------------–-------------------------–--------------------------------- RENDER
+  /**
+   * Handle page for Stack
+   * Minimal arguments should be: useStack({ componentName, handleRef, rootRef });
+   * (remove playIn and playOut if not use)
+   */
+  useStack({ componentName, handleRef, rootRef, playIn, playOut })
 
   return (
-    <div className={merge([css.root, props.className])}>
+    <div className={css.root} ref={rootRef}>
       <header className={css.header}>
         <Logo className={css.logo} ref={logoRef} />
         <a
@@ -207,6 +213,7 @@ function HomeView(props: IProps) {
       </footer>
     </div>
   )
-}
+})
 
-export default HomeView
+HomePage.displayName = componentName
+export default HomePage

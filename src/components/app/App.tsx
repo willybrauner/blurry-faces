@@ -1,16 +1,11 @@
 import css from "./App.module.less"
-import React, { useEffect, useLayoutEffect, useState } from "react"
-import GalleryView from "../galleryView/GalleryView"
+import React, { useState } from "react"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
-import HomeView from "../homeView/HomeView"
-import { useMountView } from "../../helpers/useMountView"
-import HomeViewService from "../homeView/HomeViewService"
-import GalleryViewService from "../galleryView/GalleryViewService"
-import Viewer from "../../manager/Viewer"
+import { Stack } from "@cher-ami/router"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -74,17 +69,7 @@ function App() {
       })
   }
 
-  // ------------------------------------------------------------------------------------- VIEWS
-
-  const mountHomeView = useMountView(HomeViewService)
-  const mountGalleryView = useMountView(GalleryViewService)
-
-  /**
-   * show home
-   */
-  useLayoutEffect(() => {
-    Viewer.goToHome()
-  }, [])
+  // ------------------------------------------------------------------------------------- PAGE
 
   // ------------------------------------------------------------------------------------- RENDER
 
@@ -100,8 +85,7 @@ function App() {
   return (
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
-        {mountHomeView && <HomeView className={css.home} />}
-        {mountGalleryView && <GalleryView className={css.gallery} />}
+        <Stack className={css.stack} />
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>

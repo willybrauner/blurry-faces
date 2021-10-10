@@ -1,6 +1,7 @@
 @import (reference) "../../references.less";
 
 .root {
+  display: block;
 }
 
 /**
@@ -113,6 +114,7 @@ CONTENT
 }
 
 .donateLink {
+  visibility: hidden; // TWEEN
   display: block;
   .text-link();
   @media (min-width: @breakpoint-tablet) {
@@ -123,6 +125,7 @@ CONTENT
 }
 
 .creditLink {
+  visibility: hidden; // TWEEN
   display: block;
   .R(margin-top, 10, 0);
   .text-link();

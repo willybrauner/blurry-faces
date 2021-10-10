@@ -3,7 +3,7 @@ import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
 import MainButton from "../mainButton/MainButton"
-import Viewer from "../../manager/Viewer"
+import { useLocation } from "@cher-ami/router"
 
 interface IProps {
   className?: string
@@ -18,6 +18,8 @@ const debug = require("debug")(`front:${componentName}`)
 const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
   const { saveImages } = useContext(AppContext)
   const inputRef = useRef(null)
+
+  const [location, setLocation] = useLocation()
 
   /**
    * set selected images urls from input
@@ -36,7 +38,7 @@ const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
       })
     }
     saveImages(arr)
-    Viewer.goToGallery()
+    setLocation({ name: "gallery" })
   }
 
   return (

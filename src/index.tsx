@@ -5,11 +5,14 @@ import App from "./components/app/App"
 import { createContext } from "react"
 import { TBlurZone } from "./components/blurZone/BlurZone"
 import VhHelper from "./lib/utils/VhHelper"
+import { Router, TRoute } from "@cher-ami/router"
+import { createMemoryHistory, createBrowserHistory } from "history"
+import HomePage from "./pages/homePage/HomePage"
+import GalleryPage from "./pages/galleryPage/GalleryPage"
 
 /**
  * Utils
  */
-
 new VhHelper()
 
 /**
@@ -43,6 +46,30 @@ export const AppContext = createContext<{
 })
 
 /**
+ * Router
+ */
+const history =
+  process.env.NODE_ENV === "development" ? createMemoryHistory() : createBrowserHistory()
+
+const routes: TRoute[] = [
+  {
+    path: "/",
+    name: "home",
+    component: HomePage,
+  },
+  {
+    path: "/gallery",
+    name: "gallery",
+    component: GalleryPage,
+  },
+]
+
+/**
  *  Start React App
  */
-ReactDOM.render(<App />, document.getElementById("root"))
+ReactDOM.render(
+  <Router base={"/"} routes={routes} history={history}>
+    <App />
+  </Router>,
+  document.getElementById("root")
+)

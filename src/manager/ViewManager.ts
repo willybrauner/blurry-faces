@@ -47,15 +47,23 @@ export default class ViewManager {
   private unmountDeferred: TDeferredPromise<void>
 
   public unmount<GArgs = any>(args?: GArgs): Promise<void> {
+    if (this.currentPlayState !== "mount") {
+      this.log(
+        "can't unmount, currentPlayState is not mount, return.",
+        this.currentPlayState
+      )
+      return
+    }
+
     this.currentPlayState = "unmount"
-    this.log(this.name, "unmount")
+    this.log("unmount")
     this.unmountDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("unmount", args)
     return this.unmountDeferred.promise
   }
 
   public unmountComplete(): void {
-    this.log(this.name, "unmount complete")
+    this.log("unmount complete")
     this.unmountDeferred?.resolve()
   }
 
@@ -64,15 +72,23 @@ export default class ViewManager {
   private mountDeferred: TDeferredPromise<void>
 
   public mount<GArgs = any>(args?: GArgs): Promise<void> {
+    if (this.currentPlayState !== "unmount") {
+      this.log(
+        "can't mount, currentPlayState is not unmount, return.",
+        this.currentPlayState
+      )
+      return
+    }
+
     this.currentPlayState = "mount"
-    this.log(this.name, "mount")
+    this.log("mount")
     this.mountDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("mount", args)
     return this.mountDeferred.promise
   }
 
   public mountComplete(): void {
-    this.log(this.name, "mount complete")
+    this.log("mount complete")
     this.mountDeferred?.resolve()
   }
 
@@ -81,15 +97,23 @@ export default class ViewManager {
   private playOutDeferred: TDeferredPromise<void>
 
   public playOut<GArgs = any>(args?: GArgs): Promise<void> {
+    if (this.currentPlayState !== "mount") {
+      this.log(
+        "can't playOut, currentPlayState is not mount, return.",
+        this.currentPlayState
+      )
+      return
+    }
+
     this.currentPlayState = "play-out"
-    this.log(this.name, "playOut")
+    this.log("playOut")
     this.playOutDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-out", args)
     return this.playOutDeferred.promise
   }
 
   public playOutComplete(): void {
-    this.log(this.name, "playOut complete")
+    this.log("playOut complete")
     this.playStateSignal.dispatch("hidden")
     this.playOutDeferred?.resolve()
   }
@@ -99,15 +123,23 @@ export default class ViewManager {
   private playInDeferred: TDeferredPromise<void>
 
   public playIn<GArgs = any>(args?: GArgs): Promise<void> {
+    if (this.currentPlayState !== "mount") {
+      this.log(
+        "can't playIn, currentPlayState is not mount, return.",
+        this.currentPlayState
+      )
+      return
+    }
+
     this.currentPlayState = "play-in"
-    this.log(this.name, "playIn")
+    this.log("playIn")
     this.playInDeferred = deferredPromise<void>()
     this.playStateSignal.dispatch("play-in", args)
     return this.playInDeferred.promise
   }
 
   public playInComplete(): void {
-    this.log(this.name, "playIn complete")
+    this.log("playIn complete")
     this.playStateSignal.dispatch("visible")
     this.playInDeferred?.resolve()
   }
@@ -120,6 +152,6 @@ export default class ViewManager {
    * @private
    */
   private log(...rest) {
-    this.enableDebug && debug(...rest)
+    this.enableDebug && debug(this.name, ...rest)
   }
 }
