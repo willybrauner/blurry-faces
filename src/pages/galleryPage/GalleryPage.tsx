@@ -84,15 +84,19 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
           {"restart"}
         </button>
       </header>
-      <section className={css.content}>
-        <ul className={css.list}>
-          {images?.map((el, i) => (
-            <li className={css.item} key={i}>
-              <Image className={css.image} imageUrl={el.url} />
-            </li>
-          ))}
-        </ul>
-      </section>
+      {images ? (
+        <section className={css.content}>
+          <ul className={css.list}>
+            {images?.map((el, i) => (
+              <li className={css.item} key={i}>
+                <Image className={css.image} imageUrl={el.url} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        "loadinnnnnng"
+      )}
     </div>
   )
 })

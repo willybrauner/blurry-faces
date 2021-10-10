@@ -37,6 +37,7 @@ function Image(props: IProps) {
   const [faceDetections, setFaceDetections] = useState<FaceDetection[]>(null)
 
   const getFaceDetections = async (): Promise<FaceDetection[]> => {
+    // TODO charger le model de donnée en local
     const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
     await faceapi.loadTinyFaceDetectorModel(modelUrl)
 

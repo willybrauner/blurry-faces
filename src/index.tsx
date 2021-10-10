@@ -9,6 +9,7 @@ import { Router, TRoute } from "@cher-ami/router"
 import { createMemoryHistory, createBrowserHistory } from "history"
 import HomePage from "./pages/homePage/HomePage"
 import GalleryPage from "./pages/galleryPage/GalleryPage"
+import * as faceapi from "face-api.js"
 
 /**
  * Utils
@@ -63,6 +64,9 @@ const routes: TRoute[] = [
     component: GalleryPage,
   },
 ]
+
+const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
+faceapi.loadTinyFaceDetectorModel(modelUrl)
 
 /**
  *  Start React App

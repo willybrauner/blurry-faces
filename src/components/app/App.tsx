@@ -1,11 +1,11 @@
 import css from "./App.module.less"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
-import { Stack } from "@cher-ami/router"
+import { Stack, useLocation } from "@cher-ami/router"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
@@ -68,8 +68,6 @@ function App() {
         saveAs(content, "blurry-images.zip")
       })
   }
-
-  // ------------------------------------------------------------------------------------- PAGE
 
   // ------------------------------------------------------------------------------------- RENDER
 
