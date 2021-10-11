@@ -50,7 +50,7 @@ export const AppContext = createContext<{
  * Router
  */
 const history =
-  process.env.NODE_ENV === "development" ? createMemoryHistory() : createBrowserHistory()
+  process.env.NODE_ENV === "development" ? createBrowserHistory() : createMemoryHistory()
 
 const routes: TRoute[] = [
   {
@@ -65,15 +65,16 @@ const routes: TRoute[] = [
   },
 ]
 
+// faceapi.nets.tinyFaceDetector.loadFromUri("./_models").then(()=> console.log('mai oui !'))
 const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
-faceapi.loadTinyFaceDetectorModel(modelUrl)
-
-/**
- *  Start React App
- */
-ReactDOM.render(
-  <Router base={"/"} routes={routes} history={history}>
-    <App />
-  </Router>,
-  document.getElementById("root")
-)
+faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {
+  /**
+   *  Start React App
+   */
+  ReactDOM.render(
+    <Router base={"/"} routes={routes} history={history}>
+      <App />
+    </Router>,
+    document.getElementById("root")
+  )
+})
