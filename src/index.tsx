@@ -65,16 +65,12 @@ const routes: TRoute[] = [
   },
 ]
 
-// faceapi.nets.tinyFaceDetector.loadFromUri("./_models").then(()=> console.log('mai oui !'))
-const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
-faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {
-  /**
-   *  Start React App
-   */
-  ReactDOM.render(
-    <Router base={"/"} routes={routes} history={history}>
-      <App />
-    </Router>,
-    document.getElementById("root")
-  )
-})
+/**
+ *  Start React App
+ */
+ReactDOM.render(
+  <Router base={"/"} routes={routes} history={history}>
+    <App />
+  </Router>,
+  document.getElementById("root")
+)

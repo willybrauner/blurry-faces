@@ -6,11 +6,24 @@ import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
 import { Stack, useLocation } from "@cher-ami/router"
+import * as faceapi from "face-api.js"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
 
 function App() {
+  /**
+   *
+   */
+  const [appIsReady, setAppIsReady] = useState(false)
+  useEffect(() => {
+    // faceapi.nets.tinyFaceDetector.loadFromUri("./_models").then(()=> console.log('mai oui !'))
+    const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
+    faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {
+      setAppIsReady(true)
+    })
+  }, [])
+
   const [images, setImages] = useState<IImageData[]>([])
   const [isWatingSources, setIsWaitingSources] = useState<boolean>(false)
 
@@ -80,13 +93,15 @@ function App() {
     isWatingSources,
   }
 
-  return (
+  return appIsReady ? (
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
         <Stack className={css.stack} />
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>
+  ) : (
+    <div className={css.loading}>loadinggggg</div>
   )
 }
 

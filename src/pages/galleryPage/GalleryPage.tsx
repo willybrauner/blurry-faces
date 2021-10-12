@@ -43,13 +43,23 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    * playIn page transition
    * (remove this example if not use)
    */
-  const playIn = (): Promise<void> => tl.current.play() as any
+  const playIn = (): Promise<void> =>
+    new Promise(async (resolve) => {
+      await tl.current.play()
+      document.body.style.overflow = "visible"
+      resolve()
+    })
 
   /**
    * playOut page transition
    * (remove this example if not use)
    */
-  const playOut = (): Promise<void> => tl.current.reverse() as any
+  const playOut = (): Promise<void> =>
+    new Promise(async (resolve) => {
+      await tl.current.reverse()
+      document.body.style.overflow = null
+      resolve()
+    })
 
   /**
    * Handle page for Stack
