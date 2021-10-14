@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "parcel",
-    "build": "parcel build",
+    "build": "parcel build --public-url /blurry-faces",
     "scaffold": "node config/tasks/runner.js scaffold",
     "prepare": "husky install"
   },
