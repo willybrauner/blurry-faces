@@ -1,4 +1,4 @@
-import css from "./Image.module.less"
+import * as css from "./Image.module.less"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"

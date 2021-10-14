@@ -1,4 +1,4 @@
-import css from "./InputImages.module.less"
+import * as css from "./InputImages.module.less"
 import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"

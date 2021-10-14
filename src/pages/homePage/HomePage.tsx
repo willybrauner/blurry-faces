@@ -1,4 +1,4 @@
-import css from "./HomePage.module.less"
+import * as css from "./HomePage.module.less"
 import React, { forwardRef, ForwardedRef, useRef, useLayoutEffect } from "react"
 import { useStack } from "@cher-ami/router"
 import { gsap } from "gsap"

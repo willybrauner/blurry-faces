@@ -1,4 +1,4 @@
-import css from "./Polaroid.module.less"
+import * as css from "./Polaroid.module.less"
 import React, { forwardRef, MutableRefObject } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 

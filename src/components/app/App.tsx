@@ -1,4 +1,4 @@
-import css from "./App.module.less"
+import * as css from "./App.module.less"
 import React, { useEffect, useState } from "react"
 import { AppContext, IImageData } from "../../index"
 import JSZip from "jszip"

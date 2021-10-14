@@ -1,4 +1,4 @@
-import css from "./BlurZoneBuilder.module.less"
+import * as css from "./BlurZoneBuilder.module.less"
 import React, { useEffect, useRef, useState } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import BlurZone, { TBlurZone } from "../blurZone/BlurZone"
