@@ -4,12 +4,13 @@ import { useWindowSize } from "@wbe/use-window-size"
 import { FaceDetection } from "face-api.js"
 import * as faceapi from "face-api.js"
 import { TBlurZone } from "../blurZone/BlurZone"
-import { AppContext } from "../../index"
+import { AppContext, IImageData } from "../../index"
 import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
 
 interface IProps {
   className?: string
-  imageUrl: string
+  rank: number
+  data: IImageData
 }
 
 const componentName = "Image"
@@ -60,7 +61,7 @@ function Image(props: IProps) {
       .catch((e) => {
         setImageIsReady(true)
       })
-  }, [props.imageUrl])
+  }, [props.data])
 
   const [imageSize, setImageSize] = useState<{ width: number; height: number }>(null)
   useEffect(() => {
@@ -117,11 +118,11 @@ function Image(props: IProps) {
   useEffect(() => {
     // get all zones
     const fullBlurZones = [...(blurZones || []), ...(blurZonesBuilt || [])]
-    if (!props.imageUrl || !imageSize || !fullBlurZones) return
+    if (!props.data || !imageSize || !fullBlurZones) return
 
     // prepare new image list with sources
     const newImagesList = images.map((el) => {
-      if (el.url === props.imageUrl) {
+      if (el.url === props.data?.url) {
         el["width"] = imageSize.width
         el["height"] = imageSize.height
         el["$img"] = imageRef.current
@@ -133,7 +134,7 @@ function Image(props: IProps) {
 
     // au lieu de save image, on pourrait save
     saveImages(newImagesList)
-  }, [blurZonesBuilt, blurZones, imageSize, props.imageUrl])
+  }, [blurZonesBuilt, blurZones, imageSize, props.data.url])
 
   /**
    * remove zone on click
@@ -167,11 +168,15 @@ function Image(props: IProps) {
 
   return (
     <div className={css.root} ref={rootRef}>
+      <header className={css.infos}>
+        <div className={css.rank}>{props.rank > 9 ? props.rank : `0${props.rank}`}. </div>
+        <h2 className={css.filename}>{props.data.filename}</h2>
+      </header>
       <div className={css.wrapper}>
         <img
           className={[css.image, imageIsReady && css.image_isReady].join(" ")}
           alt={"image"}
-          src={props.imageUrl}
+          src={props.data.url}
           ref={imageRef}
         />
         <canvas className={css.canvas} ref={canvasRef} />

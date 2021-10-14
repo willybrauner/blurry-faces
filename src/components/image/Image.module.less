@@ -4,8 +4,32 @@
   .disableSelection();
 }
 
+.infos {
+  @media (min-width: @breakpoint-laptop) {
+    position: absolute;
+    .R(margin-left, -320);
+    .R(width, 300);
+    text-align: right;
+  }
+}
+
+.rank {
+  color: @color-red;
+  .R(font-size, 14, 18);
+}
+
+.filename {
+  .R(margin-top, 2);
+  .R(font-size, 14, 18);
+  color: @color-grey-2;
+}
+
 .wrapper {
+  .R(margin-top, 10);
   position: relative;
+  @media (min-width: @breakpoint-laptop) {
+    .R(margin-top, 0);
+  }
 }
 
 .image {

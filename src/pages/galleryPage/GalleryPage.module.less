@@ -77,13 +77,14 @@
   .R(margin-top, 80);
   margin: auto;
   width: 80%;
-  @media (min-width: @breakpoint-tablet) {
-    width: 30%;
+  @media (min-width: @breakpoint-laptop) {
+    .R(width, 816);
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
 .item {
   .R(margin-top, 50);
   position: relative;
-  width: 100%;
 }

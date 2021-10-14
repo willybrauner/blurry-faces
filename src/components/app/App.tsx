@@ -5,26 +5,34 @@ import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { div2Canvas } from "../../helpers/helpers"
 import Loader from "../loader/Loader"
-import { Stack, useLocation } from "@cher-ami/router"
+import { Stack } from "@cher-ami/router"
 import * as faceapi from "face-api.js"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
+import example from "../../images/example.jpg"
 
 function App() {
   /**
-   *
+   * Load model
    */
   const [appIsReady, setAppIsReady] = useState(false)
   useEffect(() => {
-    // faceapi.nets.tinyFaceDetector.loadFromUri("./_models").then(()=> console.log('mai oui !'))
+    // faceapi.nets.tinyFaceDetector.loadFromUri("./_models")
     const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
     faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {
       setAppIsReady(true)
     })
   }, [])
 
-  const [images, setImages] = useState<IImageData[]>([])
+  const [images, setImages] = useState<IImageData[]>([
+    {
+      filename: "example.jpg",
+      url: example,
+      width: 200,
+      height: 200,
+    },
+  ])
   const [isWatingSources, setIsWaitingSources] = useState<boolean>(false)
 
   /**
