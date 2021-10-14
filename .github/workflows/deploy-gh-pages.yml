@@ -1,10 +1,10 @@
-name: Build
+name: Build and Deploy
 on:
   push:
-    branches-ignore:
+    branches:
       - main
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -14,3 +14,9 @@ jobs:
         run: |
           npm install
           npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: dist
