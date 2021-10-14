@@ -1,7 +1,7 @@
 {
   "name": "blurry-faces-app",
   "version": "0.1.0",
-  "description": "",
+  "description": "AI put some blur on your face",
   "author": "willy brauner",
   "license": "MIT",
   "source": "src/index.html",
@@ -12,11 +12,6 @@
     "typescript",
     "less"
   ],
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/cher-ami/webpack-base.git"
@@ -24,7 +19,6 @@
   "scripts": {
     "dev": "parcel",
     "build": "parcel build --public-url /blurry-faces",
-    "scaffold": "node config/tasks/runner.js scaffold",
     "prepare": "husky install"
   },
   "dependencies": {
