@@ -12,6 +12,10 @@ and add blur area to them. A zip file can be download with the burry images coll
 This app use [face-api]("https://github.com/justadudewhohacks/face-api.js/") for face detections coordinates on each images.
 Your images are not saved anywhere, you can check the source code :)
 
+## Licence
+
+[MIT](./LICENSE)
+
 ## Credits
 
 Willy Brauner
