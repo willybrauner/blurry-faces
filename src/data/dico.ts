@@ -7,6 +7,7 @@ export const DICO = {
 
   credits: "design & dev by Willy B.",
   donate: "it’s usefull? pay me a 🍺",
-  donate_link: "paypal.com",
+  donate_link:
+    "https://www.paypal.com/donate/?business=48CH6BLTZSRPA&no_recurring=0&currency_code=EUR",
   author_webiste: "https://willybrauner.com",
 }
