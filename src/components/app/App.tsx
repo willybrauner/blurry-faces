@@ -10,7 +10,9 @@ import * as faceapi from "face-api.js"
 
 const componentName = "App"
 const debug = require("debug")(`front:${componentName}`)
-import example from "../../images/example.jpg"
+import example from "../../images/example-1.jpg"
+import example2 from "../../images/example-2.jpg"
+import example3 from "../../images/example-3.jpg"
 
 function App() {
   /**
@@ -29,20 +31,20 @@ function App() {
 
   const [images, setImages] = useState<IImageData[]>([
     {
-      filename: "example.jpg",
+      filename: "example-1.jpg",
       url: example,
       width: 200,
       height: 200,
     },
     {
-      filename: "example.jpg",
-      url: example,
+      filename: "example-2.jpg",
+      url: example2,
       width: 200,
       height: 200,
     },
     {
-      filename: "example.jpg",
-      url: example,
+      filename: "example-3.jpg",
+      url: example3,
       width: 200,
       height: 200,
     },
