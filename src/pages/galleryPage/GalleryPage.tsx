@@ -26,6 +26,9 @@ const debug = require("debug")(`front:${componentName}`)
 const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => {
   const rootRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef(null)
+  const restartButtonRef = useRef(null)
+  const logoRef = useRef(null)
+  const downloadButtonRef = useRef(null)
   const listRef = useRef(null)
   const itemRef = useRef([])
   const { images } = useContext(AppContext)
@@ -40,10 +43,12 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
   const initTl = (): gsap.core.Timeline => {
     const current = gsap.timeline({ paused: true })
     current.from(
-      headerRef.current,
+      [restartButtonRef.current, logoRef.current, downloadButtonRef.current],
       {
         y: -window.innerHeight,
-        ease: "expo.out",
+        stagger: 0.05,
+        ease: "elastic.out(0.4, 0.8)",
+        duration: 0.7,
       },
       "start"
     )
@@ -51,10 +56,10 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
       listRef.current,
       {
         y: window.innerHeight,
-        duration: 1.3,
-        ease: "expo.inOut",
+        duration: 1,
+        ease: "elastic.out(0.3, 0.5)",
       },
-      "start=+0.2"
+      "start=+0.1"
     )
     return current
   }
@@ -103,9 +108,9 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
     <div className={css.root} ref={rootRef}>
       <div className={css.headerBackground} />
       <header className={css.header} ref={headerRef}>
-        <RestartButton className={css.restartButton} />
-        <Logo className={css.logo} />
-        <DownloadButton className={css.downloadButton} />
+        <RestartButton className={css.restartButton} ref={restartButtonRef} />
+        <Logo className={css.logo} ref={logoRef} />
+        <DownloadButton className={css.downloadButton} ref={downloadButtonRef} />
       </header>
       {images ? (
         <section className={css.content}>

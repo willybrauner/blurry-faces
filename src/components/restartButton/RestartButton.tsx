@@ -22,7 +22,7 @@ const RestartButton = forwardRef((props: IProps, ref: MutableRefObject<any>) => 
   const handleClick = () => {
     props.onClick?.()
     setLocation({ name: "home" })
-    resetImages()
+    //    resetImages()
   }
 
   return (
