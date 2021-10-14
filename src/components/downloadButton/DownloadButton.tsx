@@ -16,6 +16,7 @@ const debug = require("debug")(`front:${componentName}`)
  */
 const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
   const { images, createZipFiles } = useContext(AppContext)
+
   const handleClick = async () => {
     await createZipFiles()
   }
@@ -38,9 +39,11 @@ const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) =>
           fill="black"
         />
       </svg>
-      <div className={css.label}>{`Download ${images.length} image${
-        images.length > 1 ? "s" : ""
-      } :)`}</div>
+      <div className={css.label}>
+        {"Download"}
+        <br />
+        {`${images.length} image${images.length > 1 ? "s" : ""} :)`}
+      </div>
     </button>
   )
 })
