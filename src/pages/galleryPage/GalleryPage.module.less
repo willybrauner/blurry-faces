@@ -3,6 +3,7 @@
 .root {
   .R(padding-bottom, 50);
   position: relative;
+  background: @color-blue-1;
 }
 
 .header {
@@ -10,10 +11,22 @@
   left: 0;
   right: 0;
   position: fixed;
-  .R(height, 80);
-  background: #0e203e;
+  .R(height, 80, 120);
+  background: @color-blue-1;
   z-index: 1;
   .flex(flex, row, wrap, center, center);
+}
+
+.logo {
+  transform: scale(0.5);
+}
+
+.headerBackground {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  .R(height, 130, 300);
+  background: @color-blue-1;
 }
 
 .mainButton {
@@ -74,7 +87,7 @@
 }
 
 .list {
-  .R(margin-top, 80);
+  .R(margin-top, 110, 130);
   margin: auto;
   width: 80%;
   @media (min-width: @breakpoint-laptop) {

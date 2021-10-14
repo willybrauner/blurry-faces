@@ -10,6 +10,7 @@ import { useStack } from "@cher-ami/router"
 import { AppContext } from "../../index"
 import { gsap } from "gsap"
 import Image from "../../components/image/Image"
+import Logo from "../../components/logo/Logo"
 
 interface IProps {}
 
@@ -36,7 +37,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
   }
 
   useLayoutEffect(() => {
-    tl.current = initTl()
+    //    tl.current = initTl()
   }, [])
 
   /**
@@ -45,7 +46,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    */
   const playIn = (): Promise<void> =>
     new Promise(async (resolve) => {
-      await tl.current.play()
+      //    await tl.current.play()
       document.body.style.overflow = "scroll"
       resolve()
     })
@@ -56,7 +57,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    */
   const playOut = (): Promise<void> =>
     new Promise(async (resolve) => {
-      await tl.current.reverse()
+      //      await tl.current.reverse()
       document.body.style.overflow = null
       resolve()
     })
@@ -70,7 +71,9 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
 
   return (
     <div className={css.root} ref={rootRef}>
+      <div className={css.headerBackground} />
       <header className={css.header}>
+        <Logo className={css.logo} />
         {/*<button*/}
         {/*  className={css.mainButton}*/}
         {/*  onClick={createZipFiles}*/}
