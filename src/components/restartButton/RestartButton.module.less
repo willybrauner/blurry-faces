@@ -1,0 +1,25 @@
+@import (reference) "../../references.less";
+
+.root {
+  cursor: pointer;
+  .flex(flex, row, wrap, center, center);
+  .R(font-size, 13, 18);
+  transition: all ease-out 200ms;
+
+  &:active {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  &:hover {
+    color: @color-red;
+    svg {
+      path {
+        fill: @color-white;
+      }
+    }
+  }
+}
+.label {
+  .R(margin-top,-4);
+  .R(margin-left,7, 10);
+}

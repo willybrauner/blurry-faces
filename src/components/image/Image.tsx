@@ -6,11 +6,13 @@ import * as faceapi from "face-api.js"
 import { TBlurZone } from "../blurZone/BlurZone"
 import { AppContext, IImageData } from "../../index"
 import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
+import { preloadImage } from "../../helpers/preloadImage"
 
 interface IProps {
   className?: string
   rank: number
   data: IImageData
+  dispatchImageIsReady: (isReady: boolean) => void
 }
 
 const componentName = "Image"
@@ -38,12 +40,6 @@ function Image(props: IProps) {
   const [faceDetections, setFaceDetections] = useState<FaceDetection[]>(null)
 
   const getFaceDetections = async (): Promise<FaceDetection[]> => {
-    // TODO charger le model de donnée en local
-    //    await faceapi.nets.tinyFaceDetector.loadFromUri("./models")
-    debug("ici !")
-    // const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
-    // await faceapi.loadTinyFaceDetectorModel(modelUrl)
-
     const options = new faceapi.TinyFaceDetectorOptions({
       inputSize: 608,
       scoreThreshold: 0.5,
@@ -54,12 +50,18 @@ function Image(props: IProps) {
   const [imageIsReady, setImageIsReady] = useState(false)
   useEffect(() => {
     getFaceDetections()
-      .then((detections: FaceDetection[]) => {
+      .then(async (detections: FaceDetection[]) => {
         setFaceDetections(detections)
+        await preloadImage(props.data.url)
         setImageIsReady(true)
+        props.dispatchImageIsReady(true)
       })
-      .catch((e) => {
+
+      // if no face detection
+      .catch(async (e) => {
+        await preloadImage(props.data.url)
         setImageIsReady(true)
+        props.dispatchImageIsReady(true)
       })
   }, [props.data])
 
@@ -111,8 +113,6 @@ function Image(props: IProps) {
 
   /**
    * Create new image with blur zones
-   *
-   * TODO on veut executer cette fonction uniquement quand on click sur tout télécharger
    */
 
   useEffect(() => {
@@ -123,11 +123,10 @@ function Image(props: IProps) {
     // prepare new image list with sources
     const newImagesList = images.map((el) => {
       if (el.url === props.data?.url) {
-        el["width"] = imageSize.width
-        el["height"] = imageSize.height
-        el["$img"] = imageRef.current
-        el["fullBlurZones"] = fullBlurZones
-        //            el.data = source
+        el.width = imageSize.width
+        el.height = imageSize.height
+        el.$img = imageRef.current
+        el.fullBlurZones = fullBlurZones
       }
       return el
     })

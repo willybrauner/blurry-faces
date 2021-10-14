@@ -18,7 +18,9 @@ function App() {
    */
   const [appIsReady, setAppIsReady] = useState(false)
   useEffect(() => {
-    // faceapi.nets.tinyFaceDetector.loadFromUri("./_models")
+    // TODO charger le model de donnée en local
+    //    await faceapi.nets.tinyFaceDetector.loadFromUri("./models")
+
     const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
     faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {
       setAppIsReady(true)
@@ -26,6 +28,18 @@ function App() {
   }, [])
 
   const [images, setImages] = useState<IImageData[]>([
+    {
+      filename: "example.jpg",
+      url: example,
+      width: 200,
+      height: 200,
+    },
+    {
+      filename: "example.jpg",
+      url: example,
+      width: 200,
+      height: 200,
+    },
     {
       filename: "example.jpg",
       url: example,
@@ -90,6 +104,38 @@ function App() {
       })
   }
 
+  // ------------------------------------------------------------------------------------- PAGES
+
+  const sequencialTransition = ({
+    previousPage,
+    currentPage,
+    unmountPreviousPage,
+  }): Promise<void> => {
+    return new Promise(async (resolve) => {
+      const $current = currentPage?.$element
+
+      // hide new page
+      if ($current) $current.style.visibility = "hidden"
+
+      // play out and unmount previous page
+      if (previousPage) {
+        await previousPage.playOut()
+        unmountPreviousPage()
+      }
+
+      // wait page isReady promise
+      await currentPage?.isReadyPromise?.()
+
+      // show and play in new page
+      if (currentPage) {
+        if ($current) $current.style.visibility = "visible"
+        await currentPage?.playIn?.()
+      }
+
+      resolve()
+    })
+  }
+
   // ------------------------------------------------------------------------------------- RENDER
 
   const providerValue = {
@@ -104,7 +150,7 @@ function App() {
   return appIsReady ? (
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
-        <Stack className={css.stack} />
+        <Stack className={css.stack} manageTransitions={sequencialTransition} />
         {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>

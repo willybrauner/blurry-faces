@@ -12,13 +12,9 @@
   right: 0;
   position: fixed;
   .R(height, 80, 120);
+  width: 100%;
   background: @color-blue-1;
   z-index: 1;
-  .flex(flex, row, wrap, center, center);
-}
-
-.logo {
-  transform: scale(0.5);
 }
 
 .headerBackground {
@@ -29,60 +25,27 @@
   background: @color-blue-1;
 }
 
-.mainButton {
-  cursor: pointer;
-  position: relative;
-  color: @color-red;
-  .R(font-size, 16, 18);
-
-  margin: auto;
-  .flex(flex, row, wrap, center, center);
-  transition: all ease-out 200ms;
-
-  &:active {
-    opacity: 0.8;
-    text-decoration: underline;
-  }
-  &:hover {
-    color: @color-white;
-    svg {
-      .R(margin-left, 11, 12);
-      path {
-        fill: @color-white;
-      }
-    }
-  }
-
-  svg {
-    .R(margin-left, 8, 10);
-    transition: all ease-out 200ms;
-    path {
-      transition: all ease-out 200ms;
-      fill: @color-red;
-    }
-  }
+.restartButton {
+  .absoluteCenter(y);
+  .R(left, 13, 30);
 }
 
-.restart {
-  cursor: pointer;
+.logo {
+  .absoluteCenter();
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.downloadButton {
   .absoluteCenter(y);
-  .R(right, 30);
+  .R(right, 20, 30);
 
-  color: @color-red;
-  .R(font-size, 16, 18);
-  transition: all ease-out 200ms;
-
-  &:active {
-    opacity: 0.8;
-    text-decoration: underline;
-  }
-  &:hover {
-    color: @color-white;
-    svg {
-      path {
-        fill: @color-white;
-      }
-    }
+  @media (min-width: @breakpoint-laptop) {
+    position: fixed;
+    .topLeft(50%, 50%);
+    transform: none;
+    left: initial;
+    .R(top, 30);
+    .R(width, 250);
   }
 }
 

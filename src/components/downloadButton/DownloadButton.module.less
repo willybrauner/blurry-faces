@@ -1,0 +1,48 @@
+@import (reference) "../../references.less";
+
+.root {
+  cursor: pointer;
+
+  background-color: @color-blue-2;
+  .R(padding, 10, 40);
+  border-radius: 10px;
+
+  &:active {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  &:hover {
+    .svg {
+      path {
+        fill: @color-white;
+      }
+    }
+    .label {
+      color: @color-white;
+    }
+  }
+}
+
+.svg {
+  transition: all ease-out 200ms;
+  .R(width, 20, 40);
+  @media (min-width: @breakpoint-tablet) {
+  }
+
+  path {
+    transition: all ease-out 200ms;
+    fill: @color-red;
+  }
+}
+
+.label {
+  display: none;
+  @media (min-width: @breakpoint-tablet) {
+    display: block;
+    .R(margin-top, 10);
+    color: @color-white;
+    transition: all ease-out 200ms;
+    .R(font-size, 18);
+    line-height: 1.6em;
+  }
+}

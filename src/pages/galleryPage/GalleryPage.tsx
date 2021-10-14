@@ -5,12 +5,15 @@ import React, {
   useRef,
   useContext,
   useLayoutEffect,
+  useState,
 } from "react"
 import { useStack } from "@cher-ami/router"
 import { AppContext } from "../../index"
 import { gsap } from "gsap"
 import Image from "../../components/image/Image"
 import Logo from "../../components/logo/Logo"
+import RestartButton from "../../components/restartButton/RestartButton"
+import DownloadButton from "../../components/downloadButton/DownloadButton"
 
 interface IProps {}
 
@@ -22,7 +25,13 @@ const debug = require("debug")(`front:${componentName}`)
  */
 const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => {
   const rootRef = useRef<HTMLDivElement>(null)
-  const { images, resetImages, createZipFiles } = useContext(AppContext)
+  const headerRef = useRef(null)
+  const listRef = useRef(null)
+  const itemRef = useRef([])
+  const { images } = useContext(AppContext)
+
+  const imageReadyCounter = useRef<number>(0)
+  const [imagesAreReady, setImagesAreReady] = useState<boolean>(false)
 
   // ------------------------------------------------------------------------------------- PAGE
 
@@ -30,14 +39,28 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
 
   const initTl = (): gsap.core.Timeline => {
     const current = gsap.timeline({ paused: true })
-    current.from(rootRef.current, {
-      autoAlpha: 0,
-    })
+    current.from(
+      headerRef.current,
+      {
+        y: -window.innerHeight,
+        ease: "expo.out",
+      },
+      "start"
+    )
+    current.from(
+      listRef.current,
+      {
+        y: window.innerHeight,
+        duration: 1.3,
+        ease: "expo.inOut",
+      },
+      "start=+0.2"
+    )
     return current
   }
 
   useLayoutEffect(() => {
-    //    tl.current = initTl()
+    if (!tl.current) tl.current = initTl()
   }, [])
 
   /**
@@ -46,7 +69,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    */
   const playIn = (): Promise<void> =>
     new Promise(async (resolve) => {
-      //    await tl.current.play()
+      await tl.current.play()
       document.body.style.overflow = "scroll"
       resolve()
     })
@@ -57,7 +80,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    */
   const playOut = (): Promise<void> =>
     new Promise(async (resolve) => {
-      //      await tl.current.reverse()
+      await tl.current.reverse()
       document.body.style.overflow = null
       resolve()
     })
@@ -67,42 +90,39 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    * Minimal arguments should be: useStack({ componentName, handleRef, rootRef });
    * (remove playIn and playOut if not use)
    */
-  useStack({ componentName, handleRef, rootRef, playIn, playOut })
+  useStack({
+    componentName,
+    handleRef,
+    rootRef,
+    playIn,
+    playOut,
+    isReady: imagesAreReady,
+  })
 
   return (
     <div className={css.root} ref={rootRef}>
       <div className={css.headerBackground} />
-      <header className={css.header}>
+      <header className={css.header} ref={headerRef}>
+        <RestartButton className={css.restartButton} />
         <Logo className={css.logo} />
-        {/*<button*/}
-        {/*  className={css.mainButton}*/}
-        {/*  onClick={createZipFiles}*/}
-        {/*  aria-label={"download button"}*/}
-        {/*>*/}
-        {/*  <span className={css.text}>{`Download ${images.length} images`}</span>*/}
-        {/*  <svg*/}
-        {/*    width="24"*/}
-        {/*    height="16"*/}
-        {/*    viewBox="0 0 24 16"*/}
-        {/*    fill="none"*/}
-        {/*    xmlns="http://www.w3.org/2000/svg"*/}
-        {/*  >*/}
-        {/*    <path*/}
-        {/*      d="M19.35 6.04C18.67 2.59 15.64 0 12 0C9.11 0 6.6 1.64 5.35 4.04C2.34 4.36 0 6.91 0 10C0 13.31 2.69 16 6 16H19C21.76 16 24 13.76 24 11C24 8.36 21.95 6.22 19.35 6.04ZM17 9L12 14L7 9H10V5H14V9H17Z"*/}
-        {/*      fill="black"*/}
-        {/*    />*/}
-        {/*  </svg>*/}
-        {/*</button>*/}
-        {/*<button className={css.restart} onClick={resetImages}>*/}
-        {/*  {"restart"}*/}
-        {/*</button>*/}
+        <DownloadButton className={css.downloadButton} />
       </header>
       {images ? (
         <section className={css.content}>
-          <ul className={css.list}>
+          <ul className={css.list} ref={listRef}>
             {images?.map((el, i) => (
-              <li className={css.item} key={i}>
-                <Image className={css.image} data={el} rank={i + 1} />
+              <li className={css.item} key={i} ref={(r) => (itemRef.current[i] = r)}>
+                <Image
+                  className={css.image}
+                  data={el}
+                  rank={i + 1}
+                  dispatchImageIsReady={() => {
+                    imageReadyCounter.current++
+                    if (imageReadyCounter.current === images.length) {
+                      setImagesAreReady(true)
+                    }
+                  }}
+                />
               </li>
             ))}
           </ul>
