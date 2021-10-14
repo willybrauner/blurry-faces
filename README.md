@@ -18,4 +18,4 @@ Your images are not saved anywhere, you can check the source code :)
 
 ## Credits
 
-Willy Brauner
+dev & design by [Willy Brauner](https://willybrauner.com)
