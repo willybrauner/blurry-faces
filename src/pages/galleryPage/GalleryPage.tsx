@@ -1,4 +1,4 @@
-import css from "./GalleryPage.module.less"
+import * as css from "./GalleryPage.module.less"
 import React, {
   forwardRef,
   ForwardedRef,

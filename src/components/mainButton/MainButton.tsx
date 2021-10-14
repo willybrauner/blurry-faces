@@ -1,4 +1,4 @@
-import css from "./MainButton.module.less"
+import * as css from "./MainButton.module.less"
 import React from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 

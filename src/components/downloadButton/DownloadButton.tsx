@@ -1,4 +1,4 @@
-import css from "./DownloadButton.module.less"
+import * as css from "./DownloadButton.module.less"
 import React, { forwardRef, MutableRefObject, useContext } from "react"
 import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext } from "../../index"
