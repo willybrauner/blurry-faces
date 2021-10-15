@@ -200,7 +200,7 @@ const HomePage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => {
           ref={donateLinkRef}
           target={"_blank"}
         >
-          <div className={css.donate}>{DICO.donate}</div>
+          <div className={css.donate} dangerouslySetInnerHTML={{ __html: DICO.donate }} />
         </a>
         <a
           className={css.creditLink}
