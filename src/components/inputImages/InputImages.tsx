@@ -4,6 +4,7 @@ import { merge } from "../../lib/utils/arrayUtils"
 import { AppContext, IImageData } from "../../index"
 import MainButton from "../mainButton/MainButton"
 import { useLocation } from "@cher-ami/router"
+import { DICO } from "../../data/dico"
 
 interface IProps {
   className?: string
@@ -44,7 +45,7 @@ const InputImages = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
   return (
     <div className={merge([css.root, props.className])} ref={ref}>
       <MainButton
-        label={"Upload your images"}
+        label={DICO.import_button_label}
         className={css.mainButton}
         onClick={() => inputRef.current.click()}
       />

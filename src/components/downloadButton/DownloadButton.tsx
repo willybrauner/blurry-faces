@@ -26,7 +26,7 @@ const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) =>
       className={merge([css.root, props.className])}
       ref={ref}
       onClick={handleClick}
-      aria-label={"download button"}
+      aria-label={"export images button"}
     >
       <svg
         className={css.svg}
@@ -40,7 +40,7 @@ const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) =>
         />
       </svg>
       <div className={css.label}>
-        {"Download"}
+        {"Export"}
         <br />
         {`${images.length} image${images.length > 1 ? "s" : ""} :)`}
       </div>
