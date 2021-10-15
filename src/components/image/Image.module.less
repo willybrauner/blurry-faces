@@ -36,6 +36,30 @@
   border-radius: 0.2em;
   position: relative;
   width: 100%;
+
+  transition: opacity ease-out 200ms;
+
+  &_isReady {
+    opacity: 1;
+  }
+}
+
+.overlay {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlayLabel {
+  .element-blink-animation();
+  color: @color-white;
+  .absoluteCenter();
+  text-align: center;
+  width: 100%;
 }
 
 .canvas {

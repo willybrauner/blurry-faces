@@ -2,7 +2,7 @@ import css from "./DownloadButton.module.less"
 import React, { forwardRef, MutableRefObject, useContext } from "react"
 import { merge } from "../../helpers/arrayUtils"
 import { AppContext } from "../../index"
-import { useLocation } from "@cher-ami/router"
+import { DICO } from "../../data/dico"
 
 interface IProps {
   className?: string
@@ -15,15 +15,20 @@ const debug = require("@wbe/debug")(`front:${componentName}`)
  * @name DownloadButton
  */
 const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) => {
-  const { images, createZipFiles } = useContext(AppContext)
+  const { images, createZipFiles, isWatingSources } = useContext(AppContext)
 
   const handleClick = async () => {
     await createZipFiles()
   }
 
+  const label = `${"Export"}<br/>${images.length} image${images.length > 1 ? "s" : ""} :)`
   return (
     <button
-      className={merge([css.root, props.className])}
+      className={merge([
+        css.root,
+        props.className,
+        isWatingSources && css.root_isWaitingSources,
+      ])}
       ref={ref}
       onClick={handleClick}
       aria-label={"export images button"}
@@ -39,10 +44,12 @@ const DownloadButton = forwardRef((props: IProps, ref: MutableRefObject<any>) =>
           fill="black"
         />
       </svg>
-      <div className={css.label}>
-        {"Export"}
-        <br />
-        {`${images.length} image${images.length > 1 ? "s" : ""} :)`}
+      <div className={merge([css.label])}>
+        {isWatingSources ? (
+          DICO.zipLoader_label
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: label }} />
+        )}
       </div>
     </button>
   )
