@@ -5,7 +5,7 @@
 Blurry Faces is a client-side application that automatically detects faces on images and blurs them.
 It can then generate a zip file of the blurred images, and that's it!
 
-![](screen.gif)
+<img src="./screen.gif" alt="screen" width="100%"/>
 
 ## How to use?
 
