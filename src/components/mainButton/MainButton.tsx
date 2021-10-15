@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const componentName = "MainButton"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name MainButton

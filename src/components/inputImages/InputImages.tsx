@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const componentName = "InputImages"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name InputImages

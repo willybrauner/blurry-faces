@@ -12,7 +12,7 @@ import InputImages from "../../components/inputImages/InputImages"
 interface IProps {}
 
 const componentName = "HomePage"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name HomePage
