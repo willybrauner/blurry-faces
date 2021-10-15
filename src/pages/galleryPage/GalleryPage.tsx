@@ -55,6 +55,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
     current.from(
       listRef.current,
       {
+        autoAlpha: 0,
         y: window.innerHeight,
         duration: 1,
         ease: "elastic.out(0.3, 0.5)",
@@ -68,13 +69,17 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
     if (!tl.current) tl.current = initTl()
   }, [])
 
+  /**
+   * Download button TL disociated from main timeline because depend of page transition complete
+   */
+  const downloadButtonTl = useRef<gsap.core.Timeline>(null)
   useLayoutEffect(() => {
     if (!pageTransitionComplete) {
       gsap.set(downloadButtonRef.current, {
         y: -window.innerHeight,
       })
     } else {
-      gsap.to(downloadButtonRef.current, {
+      downloadButtonTl.current = gsap.timeline().to(downloadButtonRef.current, {
         y: 0,
         ease: "elastic.out(0.4, 0.8)",
         duration: 0.7,
@@ -100,6 +105,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
    */
   const playOut = (): Promise<void> =>
     new Promise(async (resolve) => {
+      if (downloadButtonTl.current) downloadButtonTl.current.reverse()
       await tl.current.reverse()
       document.body.style.overflow = null
       resolve()

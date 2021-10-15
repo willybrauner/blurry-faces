@@ -36,11 +36,14 @@
     background-color: @color-red;
 
     .svg {
-      fill: @color-white;
+      path {
+        fill: @color-white;
+      }
       .element-blink-animation();
 
       @media (min-width: @breakpoint-laptop) {
         animation: none;
+        transition: none;
       }
     }
 
@@ -51,13 +54,11 @@
 }
 
 .svg {
-  transition: all ease-out 200ms;
   .R(width, 20, 40, @breakpoint-laptop);
   @media (min-width: @breakpoint-laptop) {
   }
 
   path {
-    transition: all ease-out 200ms;
     fill: @color-red;
   }
 }
