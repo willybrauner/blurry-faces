@@ -7,9 +7,9 @@ A zip file can be download with the burry images collection, and that's it!
 
 ![](screen.gif)
 
-## How it works?
+## How does it work?
 
-The app uses [face-api]("https://github.com/justadudewhohacks/face-api.js/") to detect faces on images. The images are not saved anywhere, you can check the source code :)
+The app uses [face-api]("https://github.com/justadudewhohacks/face-api.js/") to detect faces on images, it  does not upload images to any server, it is a purely client-side face detection library; You can check the source code :)
 
 
 ## Licence
