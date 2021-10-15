@@ -2,7 +2,7 @@
 
 [Blurry faces website](https://willybrauner.github.io/blurry-faces)
 
-Blurry Faces is a client-side application that automatically detects faces on web pages and blurs them.
+Blurry Faces is a client-side application that automatically detects faces on images and blurs them.
 A zip file can be download with the burry images collection, and that's it!
 
 ![](screen.gif)
