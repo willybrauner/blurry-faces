@@ -36,15 +36,13 @@
 }
 
 .downloadButton {
-  .absoluteCenter(y);
-  .R(right, 20, 30);
+  position: fixed;
+  .R(top, 20);
+  .R(right, 20);
 
   @media (min-width: @breakpoint-laptop) {
-    position: fixed;
-    .topLeft(50%, 50%);
-    transform: none;
-    left: initial;
     .R(top, 30);
+    .R(right, 30);
     .R(width, 250);
   }
 }

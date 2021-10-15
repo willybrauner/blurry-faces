@@ -7,12 +7,14 @@ import { TBlurZone } from "../blurZone/BlurZone"
 import { AppContext, IImageData } from "../../index"
 import BlurZoneBuilder from "../blurZoneBuilder/BlurZoneBuilder"
 import { preloadImage } from "../../helpers/preloadImage"
+import { gsap } from "gsap"
+import { DICO } from "../../data/dico"
 
 interface IProps {
   className?: string
   rank: number
   data: IImageData
-  dispatchImageIsReady: (isReady: boolean) => void
+  pageTransitionComplete: boolean
 }
 
 const componentName = "Image"
@@ -32,6 +34,8 @@ function Image(props: IProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef(null)
   const canvasRef = useRef(null)
+  const overlayRef = useRef(null)
+  const overlayLabelRef = useRef(null)
   const windowSize = useWindowSize()
 
   /**
@@ -49,21 +53,23 @@ function Image(props: IProps) {
 
   const [imageIsReady, setImageIsReady] = useState(false)
   useEffect(() => {
+    if (!props.pageTransitionComplete) {
+      return
+    }
+
     getFaceDetections()
       .then(async (detections: FaceDetection[]) => {
         setFaceDetections(detections)
         await preloadImage(props.data.url)
         setImageIsReady(true)
-        props.dispatchImageIsReady(true)
       })
 
       // if no face detection
       .catch(async (e) => {
         await preloadImage(props.data.url)
         setImageIsReady(true)
-        props.dispatchImageIsReady(true)
       })
-  }, [props.data])
+  }, [props.data, props.pageTransitionComplete])
 
   const [imageSize, setImageSize] = useState<{ width: number; height: number }>(null)
   useEffect(() => {
@@ -157,13 +163,21 @@ function Image(props: IProps) {
     setBlurZonesBuilt(blurZonesBuilt.concat(e))
   }
 
-  useEffect(() => {
-    debug("blurZones", blurZones)
-  }, [blurZones])
+  // ------------------------------------------------------------------------------------- ANIM OVERLAY
 
+  const hideOverlayAnim = () => {
+    gsap.to(overlayRef.current, {
+      autoAlpha: 0,
+      ease: "expo.out",
+    })
+  }
   useEffect(() => {
-    debug("blurZonesBuilt", blurZonesBuilt)
-  }, [blurZonesBuilt])
+    if (imageIsReady) {
+      hideOverlayAnim()
+    }
+  }, [imageIsReady])
+
+  // ------------------------------------------------------------------------------------- RENDER
 
   return (
     <div className={css.root} ref={rootRef}>
@@ -179,7 +193,6 @@ function Image(props: IProps) {
           ref={imageRef}
         />
         <canvas className={css.canvas} ref={canvasRef} />
-
         {imageIsReady && (
           <BlurZoneBuilder
             key={
@@ -195,6 +208,12 @@ function Image(props: IProps) {
             handleBlurZoneBuiltClick={(i) => handleBlurZoneBuiltClick(i)}
           />
         )}
+
+        <div className={css.overlay} ref={overlayRef}>
+          <div className={css.overlayLabel} ref={overlayLabelRef}>
+            {DICO.overlay_label}
+          </div>
+        </div>
       </div>
     </div>
   )

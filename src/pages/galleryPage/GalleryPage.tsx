@@ -24,6 +24,8 @@ const debug = require("@wbe/debug")(`front:${componentName}`)
  * @name GalleryPage
  */
 const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => {
+  const { images, isWatingSources } = useContext(AppContext)
+
   const rootRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef(null)
   const restartButtonRef = useRef(null)
@@ -31,10 +33,8 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
   const downloadButtonRef = useRef(null)
   const listRef = useRef(null)
   const itemRef = useRef([])
-  const { images } = useContext(AppContext)
 
-  const imageReadyCounter = useRef<number>(0)
-  const [imagesAreReady, setImagesAreReady] = useState<boolean>(false)
+  const [pageTransitionComplete, setPageTransitionComplete] = useState<boolean>(false)
 
   // ------------------------------------------------------------------------------------- PAGE
 
@@ -43,7 +43,7 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
   const initTl = (): gsap.core.Timeline => {
     const current = gsap.timeline({ paused: true })
     current.from(
-      [restartButtonRef.current, logoRef.current, downloadButtonRef.current],
+      [restartButtonRef.current, logoRef.current],
       {
         y: -window.innerHeight,
         stagger: 0.05,
@@ -68,14 +68,29 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
     if (!tl.current) tl.current = initTl()
   }, [])
 
+  useLayoutEffect(() => {
+    if (!pageTransitionComplete) {
+      gsap.set(downloadButtonRef.current, {
+        y: -window.innerHeight,
+      })
+    } else {
+      gsap.to(downloadButtonRef.current, {
+        y: 0,
+        ease: "elastic.out(0.4, 0.8)",
+        duration: 0.7,
+      })
+    }
+  }, [pageTransitionComplete])
+
   /**
    * playIn page transition
    * (remove this example if not use)
    */
   const playIn = (): Promise<void> =>
     new Promise(async (resolve) => {
-      await tl.current.play()
       document.body.style.overflow = "scroll"
+      await tl.current.play()
+      setPageTransitionComplete(true)
       resolve()
     })
 
@@ -101,7 +116,6 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
     rootRef,
     playIn,
     playOut,
-    isReady: imagesAreReady,
   })
 
   return (
@@ -117,17 +131,15 @@ const GalleryPage = forwardRef((props: IProps, handleRef: ForwardedRef<any>) => 
           <ul className={css.list} ref={listRef}>
             {images?.map((el, i) => (
               <li className={css.item} key={i} ref={(r) => (itemRef.current[i] = r)}>
-                <Image
-                  className={css.image}
-                  data={el}
-                  rank={i + 1}
-                  dispatchImageIsReady={() => {
-                    imageReadyCounter.current++
-                    if (imageReadyCounter.current === images.length) {
-                      setImagesAreReady(true)
-                    }
-                  }}
-                />
+                {
+                  <Image
+                    pageTransitionComplete={pageTransitionComplete}
+                    key={`${pageTransitionComplete}-${i}`}
+                    className={css.image}
+                    data={el}
+                    rank={i + 1}
+                  />
+                }
               </li>
             ))}
           </ul>

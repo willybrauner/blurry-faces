@@ -153,7 +153,6 @@ function App() {
     <AppContext.Provider value={providerValue}>
       <div className={css.root}>
         <Stack className={css.stack} manageTransitions={sequencialTransition} />
-        {isWatingSources && <Loader />}
       </div>
     </AppContext.Provider>
   ) : (
