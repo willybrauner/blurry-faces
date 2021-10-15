@@ -1,6 +1,6 @@
 import css from "./Polaroid.module.less"
 import React, { forwardRef, MutableRefObject } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 
 interface IProps {
   className?: string

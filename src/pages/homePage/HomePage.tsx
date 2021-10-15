@@ -6,7 +6,7 @@ import Logo from "../../components/logo/Logo"
 import { DICO } from "../../data/dico"
 import Github from "../../components/github/Github"
 import Polaroid from "../../components/polaroid/Polaroid"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 import InputImages from "../../components/inputImages/InputImages"
 
 interface IProps {}

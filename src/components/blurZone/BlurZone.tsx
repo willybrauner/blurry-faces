@@ -1,6 +1,6 @@
 import css from "./BlurZone.module.less"
 import React, { useEffect, useState } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 
 export type TBlurZone = {
   width: number
