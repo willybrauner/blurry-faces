@@ -18,7 +18,7 @@ interface IProps {
 }
 
 const componentName = "BlurZone"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name BlurZone

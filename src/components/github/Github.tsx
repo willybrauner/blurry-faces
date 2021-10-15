@@ -7,7 +7,7 @@ interface IProps {
 }
 
 const componentName = "Github"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name Github

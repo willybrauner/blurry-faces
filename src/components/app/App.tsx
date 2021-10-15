@@ -9,7 +9,7 @@ import { Stack } from "@cher-ami/router"
 import * as faceapi from "face-api.js"
 
 const componentName = "App"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 import example from "../../images/example-1.jpg"
 import example2 from "../../images/example-2.jpg"
 import example3 from "../../images/example-3.jpg"
@@ -21,7 +21,7 @@ function App() {
   const [appIsReady, setAppIsReady] = useState(false)
   useEffect(() => {
     // TODO charger le model de donnée en local
-    //    await faceapi.nets.tinyFaceDetector.loadFromUri("./models")
+    //   await faceapi.nets.tinyFaceDetector.loadFromUri("./models")
 
     const modelUrl = "https://www.rocksetta.com/tensorflowjs/saved-models/face-api-js/"
     faceapi.loadTinyFaceDetectorModel(modelUrl).then(() => {

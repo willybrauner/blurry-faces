@@ -18,7 +18,7 @@ import DownloadButton from "../../components/downloadButton/DownloadButton"
 interface IProps {}
 
 const componentName = "GalleryPage"
-const debug = require("debug")(`front:${componentName}`)
+const debug = require("@wbe/debug")(`front:${componentName}`)
 
 /**
  * @name GalleryPage
