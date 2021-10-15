@@ -4,12 +4,11 @@ import * as React from "react"
 import App from "./components/app/App"
 import { createContext } from "react"
 import { TBlurZone } from "./components/blurZone/BlurZone"
-import VhHelper from "./lib/utils/VhHelper"
+import VhHelper from "./helpers/VhHelper"
 import { Router, TRoute } from "@cher-ami/router"
 import { createMemoryHistory, createBrowserHistory } from "history"
 import HomePage from "./pages/homePage/HomePage"
 import GalleryPage from "./pages/galleryPage/GalleryPage"
-import * as faceapi from "face-api.js"
 
 /**
  * Utils

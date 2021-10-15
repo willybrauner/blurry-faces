@@ -1,6 +1,6 @@
 import css from "./BlurZoneBuilder.module.less"
 import React, { useEffect, useRef, useState } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 import BlurZone, { TBlurZone } from "../blurZone/BlurZone"
 
 interface IProps {

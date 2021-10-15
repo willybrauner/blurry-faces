@@ -1,6 +1,6 @@
 import css from "./Logo.module.less"
 import React, { forwardRef, MutableRefObject } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 import { DICO } from "../../data/dico"
 
 interface IProps {

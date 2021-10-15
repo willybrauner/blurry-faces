@@ -1,6 +1,6 @@
 import css from "./InputImages.module.less"
 import React, { forwardRef, MutableRefObject, useContext, useRef } from "react"
-import { merge } from "../../lib/utils/arrayUtils"
+import { merge } from "../../helpers/arrayUtils"
 import { AppContext, IImageData } from "../../index"
 import MainButton from "../mainButton/MainButton"
 import { useLocation } from "@cher-ami/router"
